@@ -5,7 +5,6 @@ import { archiveEntries } from "../data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import "./home.css";
 
-// Prioritizing local Kantumruy Pro & Inter font assets
 const FONT =
   "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
 
@@ -22,7 +21,7 @@ const COPY = {
     reset: "កំណត់ស្វែងរកឡើងវិញ",
   },
   en: {
-    brand: "Khmer Living Festivals",
+    brand: "Khmer Festivals",
     heroTitle: "Cambodia's Living Festivals",
     heroSubtitle:
       "Browse and search the Khmer festivals preserved in this living archive.",
@@ -42,6 +41,10 @@ const STYLES = {
     fontFamily: FONT,
     color: "#E8EDF2",
     backgroundColor: "#14181F",
+    width: "100%",
+    maxWidth: "100vw",
+    boxSizing: "border-box",
+    overflowX: "hidden",
   },
   header: {
     position: "sticky",
@@ -52,9 +55,10 @@ const STYLES = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "0 32px",
+    padding: "0 20px",
     backgroundColor: "#0E1218",
     borderBottom: "1px solid #2E3644",
+    width: "100%",
   },
   brand: {
     fontSize: 18,
@@ -62,28 +66,26 @@ const STYLES = {
     letterSpacing: 0.5,
     color: "#E8EDF2",
     lineHeight: "24px",
-    display: "inline-block",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    minWidth: 220,
   },
   toggle: {
     display: "flex",
-    gap: 6,
+    gap: 4,
     backgroundColor: "#1C222C",
     border: "1px solid #2E3644",
     borderRadius: 999,
-    padding: 4,
+    padding: 3,
     alignItems: "center",
+    flexShrink: 0,
   },
   toggleBtn: {
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 600,
-    lineHeight: "16px",
     height: 32,
-    minWidth: 84,
+    padding: "0 14px",
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
@@ -98,9 +100,8 @@ const STYLES = {
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 700,
-    lineHeight: "16px",
     height: 32,
-    minWidth: 84,
+    padding: "0 14px",
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
@@ -113,15 +114,19 @@ const STYLES = {
   },
   hero: {
     position: "relative",
+    width: "100%",
+    boxSizing: "border-box",
     textAlign: "center",
-    padding: "88px 24px 72px",
+    padding: "60px 16px 48px",
     backgroundImage: `linear-gradient(rgba(14, 18, 24, 0.82), rgba(20, 24, 31, 0.94)), ${HERO_IMAGE}`,
     backgroundSize: "cover",
     backgroundPosition: "center",
   },
   heroInner: {
     maxWidth: 640,
+    width: "100%",
     margin: "0 auto",
+    boxSizing: "border-box",
   },
   kicker: {
     fontFamily: "'Courier New', monospace",
@@ -129,33 +134,31 @@ const STYLES = {
     letterSpacing: 2,
     textTransform: "uppercase",
     color: "#2EE6A8",
-    margin: 0,
-    minHeight: 20,
+    margin: "0 0 8px 0",
   },
   heroTitle: {
-    fontSize: 44,
+    fontSize: 32,
     fontWeight: 700,
-    lineHeight: 1.25,
-    margin: "12px 0 10px",
+    lineHeight: 1.3,
+    margin: "0 0 12px 0",
     color: "#E8EDF2",
-    minHeight: 40,
   },
   heroSubtitle: {
-    fontSize: 18,
+    fontSize: 15,
     lineHeight: 1.6,
     color: "#B9C1CE",
-    margin: "0 0 28px",
-    minHeight: 30,
+    margin: "0 0 24px 0",
   },
   search: {
     display: "flex",
     justifyContent: "center",
+    width: "100%",
   },
   searchInput: {
     width: "100%",
     maxWidth: 520,
-    padding: "14px 44px 14px 20px",
-    fontSize: 16,
+    padding: "12px 20px",
+    fontSize: 15,
     fontFamily: FONT,
     borderRadius: 999,
     border: "1px solid #3A4656",
@@ -163,18 +166,26 @@ const STYLES = {
     color: "#E8EDF2",
     outline: "none",
     boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
+    boxSizing: "border-box",
   },
   content: {
     maxWidth: 1100,
+    width: "100%",
     margin: "0 auto",
-    padding: "40px 24px 64px",
+    padding: "32px 16px 64px",
+    boxSizing: "border-box",
+    minHeight: "400px",
+    display: "flex",
+    flexDirection: "column",
   },
   resultRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
-    height: 24,
+    minHeight: 24,
+    width: "100%",
+    boxSizing: "border-box",
   },
   resultCount: {
     fontFamily: "'Courier New', monospace",
@@ -193,22 +204,23 @@ const STYLES = {
     cursor: "pointer",
   },
   empty: {
+    width: "100%",
     textAlign: "center",
-    padding: "56px 24px",
+    padding: "48px 20px",
     backgroundColor: "#1C222C",
     border: "1px dashed #3A4656",
     borderRadius: 14,
   },
   emptyTitle: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 700,
     margin: "0 0 8px",
     color: "#E8EDF2",
   },
   emptyText: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#97A1B3",
-    margin: "0 0 22px",
+    margin: "0 0 20px",
   },
   resetBtn: {
     fontFamily: FONT,
@@ -223,11 +235,13 @@ const STYLES = {
   },
   footer: {
     maxWidth: 1100,
+    width: "100%",
     margin: "0 auto",
-    padding: "24px 24px 48px",
+    padding: "24px 16px 48px",
     borderTop: "1px solid #2E3644",
     fontSize: 13,
     color: "#5A6373",
+    boxSizing: "border-box",
   },
 };
 
@@ -316,9 +330,7 @@ const Home = () => {
           </ul>
         ) : (
           <div style={STYLES.empty}>
-            <p style={STYLES.emptyTitle}>
-              {lang === "en" ? "No festivals found" : "រកមិនឃើញពិធីបុណ្យ"}
-            </p>
+            <p style={STYLES.emptyTitle}>{t.emptyTitle}</p>
             <p style={STYLES.emptyText}>{t.emptyText}</p>
             <button style={STYLES.resetBtn} onClick={() => setQuery("")}>
               {t.reset}
