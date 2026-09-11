@@ -1,21 +1,3 @@
-// ============================================================
-//  THE ARCHIVE'S FESTIVAL ENTRIES  —  src/data/entries.js
-// ------------------------------------------------------------
-//  Single source of truth for the homepage card grid.
-//
-//  Note on the extension: the assignment referenced
-//  `src/data/entries.ts`, but this project is JavaScript-only
-//  (AGENTS.md rule: no .ts / .tsx files, ever), so the file is
-//  `.js` while keeping the exact same schema shape:
-//
-//    id, titleKhmer, titleEnglish, category,
-//    descriptionKhmer, descriptionEnglish,
-//    seasonOrMonth, tags, imagePath
-//
-//  imagePath points at an asset already present in /public whose
-//  filename matches the entry's titleEnglish (kept as-is on disk).
-// ============================================================
-
 export const archiveEntries = [
   {
     id: "choul-chnam-thmey",
@@ -28,7 +10,7 @@ export const archiveEntries = [
       "The three-day celebration marking the end of the harvesting season, featuring traditional games, temple visits, and water pouring rituals.",
     seasonOrMonth: "April",
     tags: ["Holiday", "Festival", "New Year", "Spring"],
-    imagePath: "/Khmer New Year (Choul Chnam Thmey).png",
+    imagePath: "/assets/images/khmer_new_year.png",
   },
   {
     id: "pchum-ben",
@@ -41,7 +23,7 @@ export const archiveEntries = [
       "A 15-day religious festival where Cambodians pay respects to deceased ancestors through food offerings at pagodas.",
     seasonOrMonth: "September / October",
     tags: ["Religion", "Buddhism", "Ancestors", "Pagoda"],
-    imagePath: "/Pchum Ben (Ancestors' Day).png",
+    imagePath: "/assets/images/pchum_ben.png",
   },
   {
     id: "bon-om-touk",
@@ -54,7 +36,7 @@ export const archiveEntries = [
       "Celebrates the reversal of the Tonle Sap River's flow with boat races along the Phnom Penh riverfront and night lantern floats.",
     seasonOrMonth: "November",
     tags: ["Festival", "Boats", "Phnom Penh", "River"],
-    imagePath: "/Water Festival (Bon Om Touk).png",
+    imagePath: "/assets/images/water_festival.png",
   },
   {
     id: "meak-bochea",
@@ -67,7 +49,7 @@ export const archiveEntries = [
       "Commemorates the final sermon given by the Buddha to 1,250 enlightened monks who gathered spontaneously without prior summoning.",
     seasonOrMonth: "February",
     tags: ["Buddhism", "Religion", "Monks", "Holiday"],
-    imagePath: "/Meak Bochea.png",
+    imagePath: "/assets/images/meak_bochea.png",
   },
   {
     id: "royal-plowing-ceremony",
@@ -81,8 +63,7 @@ export const archiveEntries = [
       "An ancient royal agricultural rite used to predict the upcoming harvest, weather patterns, and crop yields.",
     seasonOrMonth: "May",
     tags: ["Royal", "Agriculture", "Ceremony", "Tradition"],
-    imagePath:
-      "/Royal Plowing Ceremony (Preah Reach Pithi Chrot Preah Nongkoal).png",
+    imagePath: "/assets/images/royal_plowing.png",
   },
   {
     id: "independence-day",
@@ -95,8 +76,7 @@ export const archiveEntries = [
       "Commemorates Cambodia's independence from French colonial rule in 1953, centered around celebrations at the Independence Monument.",
     seasonOrMonth: "November",
     tags: ["History", "Independence", "National", "Phnom Penh"],
-    imagePath:
-      "/Royal Plowing Ceremony (Preah Reach Pithi Chrot Preah Nongkoal).png",
+    imagePath: "/assets/images/independence_day.png",
   },
   {
     id: "king-norodom-sihamoni-birthday",
@@ -110,8 +90,7 @@ export const archiveEntries = [
       "Official national holiday honoring the birth and reign of the reigning Monarch of the Kingdom of Cambodia.",
     seasonOrMonth: "May",
     tags: ["Royal", "Monarchy", "Holiday", "National"],
-    imagePath:
-      "/Royal Plowing Ceremony (Preah Reach Pithi Chrot Preah Nongkoal).png",
+    imagePath: "/assets/images/king_birthday.png",
   },
   {
     id: "visak-bochea",
@@ -124,7 +103,6 @@ export const archiveEntries = [
       "Celebrates the birth, enlightenment, and passing (Nirvana) of the Buddha on the night of the full moon.",
     seasonOrMonth: "May",
     tags: ["Buddhism", "Religion", "Buddha", "Holiday"],
-    imagePath:
-      "/Royal Plowing Ceremony (Preah Reach Pithi Chrot Preah Nongkoal).png",
+    imagePath: "/assets/images/visak_bochea.png",
   },
 ];

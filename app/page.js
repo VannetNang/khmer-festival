@@ -33,7 +33,7 @@ const COPY = {
   },
 };
 
-const HERO_IMAGE = "url('/Khmer%20New%20Year%20(Choul%20Chnam%20Thmey).png')";
+const HERO_IMAGE = "url('/assets/images/khmer_new_year.png')";
 
 const STYLES = {
   main: {
