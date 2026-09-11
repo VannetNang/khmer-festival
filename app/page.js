@@ -237,19 +237,25 @@ const Home = () => {
     <main style={STYLES.main} lang={lang}>
       {/* Header bar with brand + KM | EN toggle */}
       <header style={STYLES.header}>
-        <span style={STYLES.brand}>{t.brand}</span>
+        <span className="brand" style={STYLES.brand}>
+          {t.brand}
+        </span>
         <div style={STYLES.toggle} role="group" aria-label="Language">
           <button
+            className="toggle-btn"
             style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
             onClick={() => setLang("km")}
           >
-            Khmer
+            <span className="short-label">KH</span>
+            <span className="full-label">Khmer</span>
           </button>
           <button
+            className="toggle-btn"
             style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
             onClick={() => setLang("en")}
           >
-            English
+            <span className="short-label">EN</span>
+            <span className="full-label">English</span>
           </button>
         </div>
       </header>

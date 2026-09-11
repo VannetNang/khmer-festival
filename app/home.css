@@ -46,3 +46,39 @@ body {
 .card-cell {
   min-width: 0;
 }
+
+/* The header brand stays on a single line even when it runs long
+   (the Khmer name) by refusing to wrap. */
+.brand {
+  white-space: nowrap;
+}
+
+/* Toggle buttons show abbreviated labels (KH / EN) on small screens
+   and the full words (Khmer / English) on larger ones. */
+.short-label {
+  display: none;
+}
+
+.full-label {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .short-label {
+    display: inline;
+  }
+
+  .full-label {
+    display: none;
+  }
+
+  /* Shrink the brand and the header's side padding on mobile so the
+     brand + toggle fit on the same line. */
+  .brand {
+    font-size: 15px;
+  }
+
+  header {
+    padding: 12px 16px;
+  }
+}
