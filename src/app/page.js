@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { archiveEntries } from "../src/data/entries.js";
+import { archiveEntries } from "../data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import "./home.css";
 
