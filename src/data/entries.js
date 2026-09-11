@@ -81,11 +81,11 @@ export const archiveEntries = [
   {
     id: "king-norodom-sihamoni-birthday",
     titleKhmer:
-      "ព្រះរាជពិធីបុណ្យចំរើនព្រះជន្ម ព្រះករុណាព្រះបាទសម្តេចព្រះបរមនាថ នរោត្តម សីហមុនី",
+      "ព្រះរាជពិធីបុណ្យចំរើនព្រះជន្ម ព្រះនរោត្តម សីហមុនី",
     titleEnglish: "King Norodom Sihamoni's Birthday",
     category: "Royal Holiday",
     descriptionKhmer:
-      "ទិវាបុណ្យជាតិផ្លូវការ ដើម្បីអបអរសាទរព្រះរាជពិធីបុណ្យចំរើនព្រះជន្ម និងរជ្ជកាលរបស់ព្រះមហាក្សត្រនៃព្រះរាជាណាចក្រកម្ពុជា",
+      "ទិវាបុណ្យជាតិផ្លូវការ ព្រះរាជពិធីបុណ្យចំរើនព្រះជន្ម ព្រះករុណាព្រះបាទសម្តេចព្រះបរមនាថ នរោត្តម សីហមុនី ដើម្បីអបអរសាទរព្រះរាជពិធីបុណ្យចំរើនព្រះជន្ម និងរជ្ជកាលរបស់ព្រះមហាក្សត្រនៃព្រះរាជាណាចក្រកម្ពុជា",
     descriptionEnglish:
       "Official national holiday honoring the birth and reign of the reigning Monarch of the Kingdom of Cambodia.",
     seasonOrMonth: "May",
