@@ -5,8 +5,9 @@ import { archiveEntries } from "../src/data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import "./home.css";
 
+// Prioritizing local Kantumruy Pro & Inter font assets
 const FONT =
-  "'Noto Sans Khmer', 'Leelawadee UI', 'Khmer OS Siemreap', 'Segoe UI', system-ui, sans-serif";
+  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
 
 const COPY = {
   km: {
@@ -46,7 +47,7 @@ const STYLES = {
     position: "sticky",
     top: 0,
     zIndex: 10,
-    height: 64, // Explicit header height prevents layout shifts
+    height: 64,
     boxSizing: "border-box",
     display: "flex",
     justifyContent: "space-between",
@@ -65,7 +66,7 @@ const STYLES = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    minWidth: 220, // Reserves space for both languages
+    minWidth: 220,
   },
   toggle: {
     display: "flex",
@@ -82,7 +83,7 @@ const STYLES = {
     fontWeight: 600,
     lineHeight: "16px",
     height: 32,
-    minWidth: 84, // Equalized button width prevents horizontal contraction
+    minWidth: 84,
     display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
@@ -96,7 +97,7 @@ const STYLES = {
   toggleBtnActive: {
     fontFamily: FONT,
     fontSize: 13,
-    fontWeight: 800,
+    fontWeight: 700,
     lineHeight: "16px",
     height: 32,
     minWidth: 84,
@@ -129,22 +130,22 @@ const STYLES = {
     textTransform: "uppercase",
     color: "#2EE6A8",
     margin: 0,
-    minHeight: 20, // Prevents vertical jump on language load
+    minHeight: 20,
   },
   heroTitle: {
     fontSize: 44,
-    fontWeight: 800,
-    lineHeight: 1.2,
+    fontWeight: 700,
+    lineHeight: 1.25,
     margin: "12px 0 10px",
     color: "#E8EDF2",
-    minHeight: 40, // Reserves double-line height across scripts
+    minHeight: 40,
   },
   heroSubtitle: {
     fontSize: 18,
     lineHeight: 1.6,
     color: "#B9C1CE",
     margin: "0 0 28px",
-    minHeight: 30, // Reserves height for double-line descriptions
+    minHeight: 30,
   },
   search: {
     display: "flex",
