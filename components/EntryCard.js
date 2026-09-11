@@ -1,15 +1,3 @@
-// One festival card. Renders the active language (lang) for a
-// single entry from src/data/entries.js.
-//
-// The card is image-first: the entry's photo (from /public) sits
-// on top, with category, title, season, description and tags in a
-// body below. Title and description switch between English and
-// Khmer based on `lang`. category / seasonOrMonth / tags are the
-// archive's data values (not UI chrome) so they render as stored.
-//
-// Public image filenames contain spaces + parentheses; encode the
-// spaces so the browser requests the correct asset path.
-
 const styles = {
   card: {
     height: "100%",
@@ -42,29 +30,39 @@ const styles = {
     margin: 0,
   },
   title: {
-    fontSize: 21,
+    fontSize: 20,
     fontWeight: 700,
     color: "#E8EDF2",
-    margin: "6px 0 2px",
-    lineHeight: 1.3,
+    margin: "6px 0 4px",
+    lineHeight: 1.35,
+    minHeight: "2.7em", // Fixed space for up to 2 lines
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
   },
   season: {
     fontSize: 13,
     color: "#7FD8B4",
     margin: "0 0 12px",
+    minHeight: "1.3em", // Ensures missing/short seasons maintain line height
   },
   description: {
-    fontSize: 15,
+    fontSize: 14,
     color: "#B9C1CE",
     lineHeight: 1.6,
-    margin: 0,
-    flex: 1,
+    margin: "0 0 16px",
+    minHeight: "4.8em", // Fixed space for up to 3 lines
+    display: "-webkit-box",
+    WebkitLineClamp: 3,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
   },
   tags: {
     display: "flex",
     flexWrap: "wrap",
     gap: 8,
-    margin: "16px 0 0",
+    marginTop: "auto", // Pins tag section strictly to the card bottom
   },
   tag: {
     fontSize: 12,

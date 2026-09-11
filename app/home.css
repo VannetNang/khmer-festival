@@ -14,8 +14,14 @@
 /* Khmer Unicode needs a font stack that includes Khmer-capable
    typefaces, otherwise the script falls back to tofu boxes. */
 body {
-  font-family: "Noto Sans Khmer", "Leelawadee UI", "Khmer OS Siemreap",
-    "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family:
+    "Noto Sans Khmer",
+    "Leelawadee UI",
+    "Khmer OS Siemreap",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
 /* The card grid container */
@@ -26,25 +32,23 @@ body {
   list-style: none;
   padding: 0;
   margin: 0;
+  align-items: stretch;
 }
 
-/* md:grid-cols-2 */
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .card-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* lg:grid-cols-3 */
 @media (min-width: 1024px) {
   .card-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-/* Ensure each card stretches to fill its grid cell */
 .card-cell {
-  min-width: 0;
+  height: 100%;
 }
 
 /* The header brand stays on a single line even when it runs long

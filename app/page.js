@@ -5,13 +5,9 @@ import { archiveEntries } from "../src/data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import "./home.css";
 
-// Khmer Unicode needs a font stack that includes Khmer-capable
-// typefaces, otherwise the script falls back to tofu boxes or clips.
 const FONT =
   "'Noto Sans Khmer', 'Leelawadee UI', 'Khmer OS Siemreap', 'Segoe UI', system-ui, sans-serif";
 
-// All user-facing UI copy lives here so switching the header toggle
-// also switches the hero, placeholders, result count and empty state.
 const COPY = {
   km: {
     brand: "ពិធីបុណ្យប្រពៃណីខ្មែរ",
@@ -37,9 +33,7 @@ const COPY = {
   },
 };
 
-// Featured photo used as the hero banner background (from /public).
-const HERO_IMAGE =
-  "url('/Khmer%20New%20Year%20(Choul%20Chnam%20Thmey).png')";
+const HERO_IMAGE = "url('/Khmer%20New%20Year%20(Choul%20Chnam%20Thmey).png')";
 
 const STYLES = {
   main: {
@@ -52,10 +46,12 @@ const STYLES = {
     position: "sticky",
     top: 0,
     zIndex: 10,
+    height: 64, // Explicit header height prevents layout shifts
+    boxSizing: "border-box",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "16px 32px",
+    padding: "0 32px",
     backgroundColor: "#0E1218",
     borderBottom: "1px solid #2E3644",
   },
@@ -64,6 +60,12 @@ const STYLES = {
     fontWeight: 700,
     letterSpacing: 0.5,
     color: "#E8EDF2",
+    lineHeight: "24px",
+    display: "inline-block",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    minWidth: 220, // Reserves space for both languages
   },
   toggle: {
     display: "flex",
@@ -72,28 +74,41 @@ const STYLES = {
     border: "1px solid #2E3644",
     borderRadius: 999,
     padding: 4,
+    alignItems: "center",
   },
   toggleBtn: {
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 600,
-    padding: "6px 16px",
+    lineHeight: "16px",
+    height: 32,
+    minWidth: 84, // Equalized button width prevents horizontal contraction
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 999,
     border: "none",
     backgroundColor: "transparent",
     color: "#97A1B3",
     cursor: "pointer",
+    boxSizing: "border-box",
   },
   toggleBtnActive: {
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 800,
-    padding: "6px 16px",
+    lineHeight: "16px",
+    height: 32,
+    minWidth: 84,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 999,
     border: "none",
     backgroundColor: "#2EE6A8",
     color: "#14181F",
     cursor: "pointer",
+    boxSizing: "border-box",
   },
   hero: {
     position: "relative",
@@ -114,19 +129,22 @@ const STYLES = {
     textTransform: "uppercase",
     color: "#2EE6A8",
     margin: 0,
+    minHeight: 20, // Prevents vertical jump on language load
   },
   heroTitle: {
     fontSize: 44,
     fontWeight: 800,
-    lineHeight: 1.15,
+    lineHeight: 1.2,
     margin: "12px 0 10px",
     color: "#E8EDF2",
+    minHeight: 40, // Reserves double-line height across scripts
   },
   heroSubtitle: {
     fontSize: 18,
     lineHeight: 1.6,
     color: "#B9C1CE",
     margin: "0 0 28px",
+    minHeight: 30, // Reserves height for double-line descriptions
   },
   search: {
     display: "flex",
@@ -155,6 +173,7 @@ const STYLES = {
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    height: 24,
   },
   resultCount: {
     fontFamily: "'Courier New', monospace",
@@ -212,13 +231,10 @@ const STYLES = {
 };
 
 const Home = () => {
-  // Default language is Khmer; toggle switches km / en.
   const [lang, setLang] = useState("km");
   const [query, setQuery] = useState("");
   const t = COPY[lang];
 
-  // Live, case-insensitive filter across Khmer + English titles,
-  // the category, and all tags.
   const q = query.trim().toLowerCase();
   const results = archiveEntries.filter((entry) => {
     if (!q) return true;
@@ -235,7 +251,6 @@ const Home = () => {
 
   return (
     <main style={STYLES.main} lang={lang}>
-      {/* Header bar with brand + KM | EN toggle */}
       <header style={STYLES.header}>
         <span className="brand" style={STYLES.brand}>
           {t.brand}
@@ -260,7 +275,6 @@ const Home = () => {
         </div>
       </header>
 
-      {/* Hero banner */}
       <section style={STYLES.hero}>
         <div style={STYLES.heroInner}>
           <p style={STYLES.kicker}>
@@ -281,7 +295,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Results */}
       <div style={STYLES.content}>
         <div style={STYLES.resultRow}>
           <p style={STYLES.resultCount}>{t.count(results.length)}</p>
@@ -292,7 +305,6 @@ const Home = () => {
           )}
         </div>
 
-        {/* Card grid (responsive via home.css .card-grid) */}
         {results.length > 0 ? (
           <ul className="card-grid">
             {results.map((entry) => (
@@ -304,9 +316,7 @@ const Home = () => {
         ) : (
           <div style={STYLES.empty}>
             <p style={STYLES.emptyTitle}>
-              {lang === "en"
-                ? "No festivals found"
-                : "រកមិនឃើញពិធីបុណ្យ"}
+              {lang === "en" ? "No festivals found" : "រកមិនឃើញពិធីបុណ្យ"}
             </p>
             <p style={STYLES.emptyText}>{t.emptyText}</p>
             <button style={STYLES.resetBtn} onClick={() => setQuery("")}>
@@ -317,13 +327,11 @@ const Home = () => {
       </div>
 
       <footer style={STYLES.footer}>
-        Built in ICT 340 — Vibe Coding, American University of Phnom Penh,
-        Fall 2026.
+        Built in ICT 340 — Vibe Coding, American University of Phnom Penh, Fall
+        2026.
       </footer>
     </main>
   );
 };
 
 export default Home;
-
-
