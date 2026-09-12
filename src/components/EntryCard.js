@@ -72,6 +72,32 @@ const styles = {
     borderRadius: 999,
     padding: "3px 11px",
   },
+  source: {
+    fontSize: 11,
+    lineHeight: 1.5,
+    color: "#7A8494",
+    margin: 0,
+    marginTop: 14,
+    paddingTop: 12,
+    borderTop: "1px solid #2E3644",
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  },
+  sourceLabel: {
+    fontWeight: 700,
+    color: "#B9C1CE",
+  },
+};
+
+const COPY = {
+  km: {
+    sourceLabel: "ប្រភព៖",
+  },
+  en: {
+    sourceLabel: "Source:",
+  },
 };
 
 const EntryCard = ({ entry, lang }) => {
@@ -79,6 +105,7 @@ const EntryCard = ({ entry, lang }) => {
   const description =
     lang === "km" ? entry.descriptionKhmer : entry.descriptionEnglish;
   const src = entry.imagePath.replace(/ /g, "%20");
+  const t = COPY[lang] ?? COPY.en;
 
   return (
     <div className="card-cell" style={styles.card}>
@@ -95,6 +122,12 @@ const EntryCard = ({ entry, lang }) => {
             </span>
           ))}
         </div>
+        {entry.source && (
+          <p style={styles.source}>
+            <span style={styles.sourceLabel}>{t.sourceLabel}</span>{" "}
+            {entry.source}
+          </p>
+        )}
       </div>
     </div>
   );
