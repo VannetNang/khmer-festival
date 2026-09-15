@@ -1,4 +1,7 @@
 const en = {
+  common: {
+    back: "Back",
+  },
   home: {
     brand: "Khmer Festivals",
     heroTitle: "Cambodia's Living Festivals",
@@ -11,7 +14,7 @@ const en = {
     reset: "Reset Search",
     kicker: "Khmer Living Archive",
     loginTitle: "Login",
-    signUpTitle: "Sign Up"
+    signUpTitle: "Sign Up",
   },
   login: {
     title: "Sign in",

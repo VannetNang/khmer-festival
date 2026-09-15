@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import Link from "next/link";
 import { login } from "./actions";
 import { getTranslations } from "../../lib/i18n";
+import BackLink from "../../components/BackLink";
 
 // Visual style mirrors the home page: dark theme, inline style objects,
 // and the same brand colors.
@@ -29,6 +30,12 @@ const STYLES = {
     borderRadius: 16,
     padding: "32px",
   },
+  topRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
   toggle: {
     display: "flex",
     gap: 4,
@@ -38,7 +45,6 @@ const STYLES = {
     padding: 3,
     alignItems: "center",
     width: "fit-content",
-    margin: "0 0 20px",
   },
   toggleBtn: {
     fontFamily: FONT,
@@ -126,21 +132,24 @@ export default function LoginPage() {
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.card}>
-        <div style={STYLES.toggle} role="group" aria-label="Language">
-          <button
-            style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-            onClick={() => setLang("km")}
-            type="button"
-          >
-            KH
-          </button>
-          <button
-            style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-            onClick={() => setLang("en")}
-            type="button"
-          >
-            EN
-          </button>
+        <div style={STYLES.topRow}>
+          <BackLink lang={lang} />
+          <div style={STYLES.toggle} role="group" aria-label="Language">
+            <button
+              style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
+              onClick={() => setLang("km")}
+              type="button"
+            >
+              KH
+            </button>
+            <button
+              style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
+              onClick={() => setLang("en")}
+              type="button"
+            >
+              EN
+            </button>
+          </div>
         </div>
         <h1 style={STYLES.title}>{t.title}</h1>
         <p style={STYLES.subtitle}>{t.subtitle}</p>
