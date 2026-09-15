@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import { login } from "./actions";
+import { getTranslations } from "../../lib/i18n";
 
 // Visual style mirrors the home page: dark theme, inline style objects,
 // and the same brand colors.
@@ -27,6 +28,41 @@ const STYLES = {
     border: "1px solid #2E3644",
     borderRadius: 16,
     padding: "32px",
+  },
+  toggle: {
+    display: "flex",
+    gap: 4,
+    backgroundColor: "#14181F",
+    border: "1px solid #2E3644",
+    borderRadius: 999,
+    padding: 3,
+    alignItems: "center",
+    width: "fit-content",
+    margin: "0 0 20px",
+  },
+  toggleBtn: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 600,
+    height: 30,
+    padding: "0 14px",
+    borderRadius: 999,
+    border: "none",
+    backgroundColor: "transparent",
+    color: "#97A1B3",
+    cursor: "pointer",
+  },
+  toggleBtnActive: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 700,
+    height: 30,
+    padding: "0 14px",
+    borderRadius: 999,
+    border: "none",
+    backgroundColor: "#2EE6A8",
+    color: "#14181F",
+    cursor: "pointer",
   },
   title: { fontSize: 26, fontWeight: 700, margin: "0 0 6px", color: "#E8EDF2" },
   subtitle: { fontSize: 14, color: "#97A1B3", margin: "0 0 24px" },
@@ -83,20 +119,38 @@ const STYLES = {
 };
 
 export default function LoginPage() {
+  const [lang, setLang] = useState("km");
   const [state, formAction, pending] = useActionState(login, { error: null });
+  const t = getTranslations(lang).login;
 
   return (
-    <main style={STYLES.main}>
+    <main style={STYLES.main} lang={lang}>
       <div style={STYLES.card}>
-        <h1 style={STYLES.title}>Sign in</h1>
-        <p style={STYLES.subtitle}>Welcome back to the archive.</p>
+        <div style={STYLES.toggle} role="group" aria-label="Language">
+          <button
+            style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
+            onClick={() => setLang("km")}
+            type="button"
+          >
+            KH
+          </button>
+          <button
+            style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
+            onClick={() => setLang("en")}
+            type="button"
+          >
+            EN
+          </button>
+        </div>
+        <h1 style={STYLES.title}>{t.title}</h1>
+        <p style={STYLES.subtitle}>{t.subtitle}</p>
         <form action={formAction}>
           <label style={STYLES.field}>
-            <span style={STYLES.label}>Email</span>
+            <span style={STYLES.label}>{t.emailLabel}</span>
             <input type="email" name="email" required style={STYLES.input} />
           </label>
           <label style={STYLES.field}>
-            <span style={STYLES.label}>Password</span>
+            <span style={STYLES.label}>{t.passwordLabel}</span>
             <input
               type="password"
               name="password"
@@ -114,13 +168,13 @@ export default function LoginPage() {
                 : STYLES.button
             }
           >
-            {pending ? "Signing in…" : "Sign in"}
+            {pending ? t.submitting : t.submit}
           </button>
         </form>
         <p style={STYLES.muted}>
-          Don&apos;t have an account?{" "}
+          {t.noAccount}{" "}
           <Link href="/signup" style={STYLES.link}>
-            Sign up
+            {t.signupLink}
           </Link>
         </p>
       </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { archiveEntries } from "../data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import { createClient } from "../lib/supabase/client.js";
+import { getTranslations } from "../lib/i18n/index.js";
 import "./home.css";
 
 const FONT =
@@ -286,7 +287,7 @@ const Home = () => {
   const [lang, setLang] = useState("km");
   const [query, setQuery] = useState("");
   const [userEmail, setUserEmail] = useState(null);
-  const t = COPY[lang];
+  const t = getTranslations(lang).home;
 
   // Track the signed-in user through the browser Supabase client so the
   // header can show their email + a logout button (or login/signup links).
@@ -357,10 +358,10 @@ const Home = () => {
         ) : (
           <div style={STYLES.auth}>
             <Link href="/login" style={STYLES.authLink}>
-              Login
+              {t.loginTitle}
             </Link>
             <Link href="/signup" style={STYLES.authLink}>
-              Sign up
+              {t.signUpTitle}
             </Link>
           </div>
         )}
@@ -368,9 +369,7 @@ const Home = () => {
 
       <section style={STYLES.hero}>
         <div style={STYLES.heroInner}>
-          <p style={STYLES.kicker}>
-            {lang === "km" ? "បណ្ណសារខ្មែររស់" : "Khmer Living Archive"}
-          </p>
+          <p style={STYLES.kicker}>{t.kicker}</p>
           <h1 style={STYLES.heroTitle}>{t.heroTitle}</h1>
           <p style={STYLES.heroSubtitle}>{t.heroSubtitle}</p>
           <div style={STYLES.search}>
