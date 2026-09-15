@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { archiveEntries } from "../data/entries.js";
 import EntryCard from "../components/EntryCard.js";
+import { createClient } from "../lib/supabase/client.js";
 import "./home.css";
 
 const FONT =
@@ -69,6 +71,41 @@ const STYLES = {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
+  },
+  auth: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    flexShrink: 0,
+  },
+  userEmail: {
+    fontSize: 13,
+    color: "#97A1B3",
+    maxWidth: "min(120px, 22vw)",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  authLink: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#14181F",
+    backgroundColor: "#2EE6A8",
+    padding: "6px 14px",
+    borderRadius: 999,
+    textDecoration: "none",
+  },
+  logoutBtn: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#E8EDF2",
+    backgroundColor: "transparent",
+    border: "1px solid #2E3644",
+    padding: "6px 14px",
+    borderRadius: 999,
+    cursor: "pointer",
   },
   toggle: {
     display: "flex",
@@ -248,7 +285,29 @@ const STYLES = {
 const Home = () => {
   const [lang, setLang] = useState("km");
   const [query, setQuery] = useState("");
+  const [userEmail, setUserEmail] = useState(null);
   const t = COPY[lang];
+
+  // Track the signed-in user through the browser Supabase client so the
+  // header can show their email + a logout button (or login/signup links).
+  useEffect(() => {
+    let mounted = true;
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      if (mounted && data?.user?.email) setUserEmail(data.user.email);
+    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserEmail(session?.user?.email ?? null);
+    });
+    return () => {
+      mounted = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  const handleLogout = async () => {
+    await createClient().auth.signOut();
+  };
 
   const q = query.trim().toLowerCase();
   const results = archiveEntries.filter((entry) => {
@@ -288,6 +347,23 @@ const Home = () => {
             <span className="full-label">English</span>
           </button>
         </div>
+        {userEmail ? (
+          <div style={STYLES.auth}>
+            <span style={STYLES.userEmail}>{userEmail}</span>
+            <button style={STYLES.logoutBtn} onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+        ) : (
+          <div style={STYLES.auth}>
+            <Link href="/login" style={STYLES.authLink}>
+              Login
+            </Link>
+            <Link href="/signup" style={STYLES.authLink}>
+              Sign up
+            </Link>
+          </div>
+        )}
       </header>
 
       <section style={STYLES.hero}>
