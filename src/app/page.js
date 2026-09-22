@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { archiveEntries } from "../data/entries.js";
 import EntryCard from "../components/EntryCard.js";
 import { createClient } from "../lib/supabase/client.js";
 import { getTranslations } from "../lib/i18n/index.js";
@@ -283,10 +282,28 @@ const STYLES = {
   },
 };
 
+// Rows come back from Postgres in snake_case, but EntryCard reads camelCase.
+// tags is nullable in the table, so fall back to an empty array for the card.
+const toCardEntry = (row) => ({
+  id: row.id,
+  titleKhmer: row.title_khmer,
+  titleEnglish: row.title_english,
+  category: row.category,
+  descriptionKhmer: row.description_khmer,
+  descriptionEnglish: row.description_english,
+  seasonOrMonth: row.season_or_month,
+  source: row.source,
+  imagePath: row.image_path,
+  tags: row.tags ?? [],
+});
+
 const Home = () => {
   const [lang, setLang] = useState("km");
   const [query, setQuery] = useState("");
   const [userEmail, setUserEmail] = useState(null);
+  const [entries, setEntries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadFailed, setLoadFailed] = useState(false);
   const t = getTranslations(lang).home;
 
   // Track the signed-in user through the browser Supabase client so the
@@ -306,12 +323,35 @@ const Home = () => {
     };
   }, []);
 
+  // Read every entry from the archive table, newest first. The select policy
+  // is open to anon + authenticated, so this works signed out too.
+  useEffect(() => {
+    let mounted = true;
+    createClient()
+      .from("archive_entries")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .then(({ data, error }) => {
+        if (!mounted) return;
+        if (error) {
+          console.error("Could not load archive entries:", error.message);
+          setLoadFailed(true);
+        } else {
+          setEntries((data ?? []).map(toCardEntry));
+        }
+        setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const handleLogout = async () => {
     await createClient().auth.signOut();
   };
 
   const q = query.trim().toLowerCase();
-  const results = archiveEntries.filter((entry) => {
+  const results = entries.filter((entry) => {
     if (!q) return true;
     const haystack = [
       entry.titleKhmer,
@@ -387,7 +427,9 @@ const Home = () => {
 
       <div style={STYLES.content}>
         <div style={STYLES.resultRow}>
-          <p style={STYLES.resultCount}>{t.count(results.length)}</p>
+          <p style={STYLES.resultCount}>
+            {loading ? t.loading : t.count(results.length)}
+          </p>
           {q && (
             <button style={STYLES.resetInline} onClick={() => setQuery("")}>
               {t.reset}
@@ -395,7 +437,17 @@ const Home = () => {
           )}
         </div>
 
-        {results.length > 0 ? (
+        {loading ? (
+          <div style={STYLES.empty}>
+            <p style={STYLES.emptyTitle}>{t.loading}</p>
+            <p style={STYLES.emptyText}>{t.loadingText}</p>
+          </div>
+        ) : loadFailed ? (
+          <div style={STYLES.empty}>
+            <p style={STYLES.emptyTitle}>{t.loadFailedTitle}</p>
+            <p style={STYLES.emptyText}>{t.loadFailedText}</p>
+          </div>
+        ) : results.length > 0 ? (
           <ul className="card-grid">
             {results.map((entry) => (
               <li key={entry.id} className="card-cell">
