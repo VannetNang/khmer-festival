@@ -352,7 +352,7 @@ const Home = () => {
           <div style={STYLES.auth}>
             <span style={STYLES.userEmail}>{userEmail}</span>
             <button style={STYLES.logoutBtn} onClick={handleLogout}>
-              Logout
+              {t.logoutTitle}
             </button>
           </div>
         ) : (

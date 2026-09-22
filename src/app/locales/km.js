@@ -15,6 +15,7 @@ const km = {
     kicker: "បណ្ណសារខ្មែររស់",
     loginTitle: "ចូលគណនី",
     signUpTitle: "បង្កើតគណនី",
+    logoutTitle: "ចេញគណនី",
   },
   login: {
     title: "ចូលគណនី",

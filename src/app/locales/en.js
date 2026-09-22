@@ -15,6 +15,7 @@ const en = {
     kicker: "Khmer Living Archive",
     loginTitle: "Login",
     signUpTitle: "Sign Up",
+    logoutTitle: "Logout",
   },
   login: {
     title: "Sign in",
