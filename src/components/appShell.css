@@ -555,6 +555,9 @@ select {
   --hero-text: #e8edf2;
   --hero-text-muted: #b9c1ce;
   --hero-accent: #2ee6a8;
+  --hero-overlay-top: rgba(14, 18, 24, 0.7);
+  --hero-overlay-bottom: rgba(20, 24, 31, 0.7);
+  --hero-input-bg: rgba(14, 18, 24, 0.85);
 }
 
 [data-theme="light"] {
@@ -576,6 +579,12 @@ select {
   --danger-soft: rgba(217, 58, 58, 0.08);
   --danger-border: rgba(217, 58, 58, 0.35);
   --danger-border-strong: rgba(217, 58, 58, 0.45);
+  --hero-text: #14181f;
+  --hero-text-muted: #3d4650;
+  --hero-accent: #0a8a54;
+  --hero-overlay-top: rgba(255, 255, 255, 0.3);
+  --hero-overlay-bottom: rgba(255, 255, 255, 0.4);
+  --hero-input-bg: rgba(255, 255, 255, 1);
 }
 
 /* ---------------- Theme toggle ---------------- */
