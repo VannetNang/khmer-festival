@@ -20,7 +20,8 @@ const en = {
     loginTitle: "Login",
     signUpTitle: "Sign Up",
     logoutTitle: "Logout",
-    contributeTitle: "Contribute",
+    createEntryTitle: "Create Entry",
+    profileTitle: "Profile",
   },
   login: {
     title: "Sign in",
@@ -102,6 +103,17 @@ const en = {
     editSubtitle: "Update the details of this entry.",
     forbidden: "You can only edit entries you own.",
     photoOptionalHint: "Leave empty to keep the current photo.",
+  },
+  profile: {
+    title: "Your entries",
+    subtitle: "The festivals you have contributed to the archive.",
+    loading: "Loading your entries…",
+    loadFailed: "We couldn't load your entries. Please try again.",
+    loginPrompt: "Sign in to see your entries.",
+    loginLink: "Log in",
+    emptyTitle: "No entries yet",
+    emptyText: "You haven't added any festivals to the archive.",
+    createCta: "Create your first entry",
   },
 };
 

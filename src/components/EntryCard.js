@@ -89,6 +89,9 @@ const styles = {
     fontWeight: 700,
     color: "#B9C1CE",
   },
+  actions: {
+    marginTop: 14,
+  },
 };
 
 const COPY = {
@@ -100,7 +103,7 @@ const COPY = {
   },
 };
 
-const EntryCard = ({ entry, lang }) => {
+const EntryCard = ({ entry, lang, actions }) => {
   const title = lang === "km" ? entry.titleKhmer : entry.titleEnglish;
   const description =
     lang === "km" ? entry.descriptionKhmer : entry.descriptionEnglish;
@@ -128,6 +131,7 @@ const EntryCard = ({ entry, lang }) => {
             {entry.source}
           </p>
         )}
+        {actions ? <div style={styles.actions}>{actions}</div> : null}
       </div>
     </div>
   );

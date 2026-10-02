@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import EntryCard from "../components/EntryCard.js";
+import TopBar from "../components/TopBar.js";
 import { createClient } from "../lib/supabase/client.js";
 import { getTranslations } from "../lib/i18n/index.js";
+import { toCardEntry } from "../lib/entries/toCardEntry.js";
 import "./home.css";
 
 const FONT =
@@ -47,107 +48,6 @@ const STYLES = {
     maxWidth: "100vw",
     boxSizing: "border-box",
     overflowX: "hidden",
-  },
-  header: {
-    position: "sticky",
-    top: 0,
-    zIndex: 10,
-    height: 64,
-    boxSizing: "border-box",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0 20px",
-    backgroundColor: "#0E1218",
-    borderBottom: "1px solid #2E3644",
-    width: "100%",
-  },
-  brand: {
-    fontSize: 18,
-    fontWeight: 700,
-    letterSpacing: 0.5,
-    color: "#E8EDF2",
-    lineHeight: "24px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  auth: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    flexShrink: 0,
-  },
-  userEmail: {
-    fontSize: 13,
-    color: "#97A1B3",
-    maxWidth: "min(120px, 22vw)",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    whiteSpace: "nowrap",
-  },
-  authLink: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 600,
-    color: "#14181F",
-    backgroundColor: "#2EE6A8",
-    padding: "6px 14px",
-    borderRadius: 999,
-    textDecoration: "none",
-  },
-  logoutBtn: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 600,
-    color: "#E8EDF2",
-    backgroundColor: "transparent",
-    border: "1px solid #2E3644",
-    padding: "6px 14px",
-    borderRadius: 999,
-    cursor: "pointer",
-  },
-  toggle: {
-    display: "flex",
-    gap: 4,
-    backgroundColor: "#1C222C",
-    border: "1px solid #2E3644",
-    borderRadius: 999,
-    padding: 3,
-    alignItems: "center",
-    flexShrink: 0,
-  },
-  toggleBtn: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 600,
-    height: 32,
-    padding: "0 14px",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 999,
-    border: "none",
-    backgroundColor: "transparent",
-    color: "#97A1B3",
-    cursor: "pointer",
-    boxSizing: "border-box",
-  },
-  toggleBtnActive: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 700,
-    height: 32,
-    padding: "0 14px",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 999,
-    border: "none",
-    backgroundColor: "#2EE6A8",
-    color: "#14181F",
-    cursor: "pointer",
-    boxSizing: "border-box",
   },
   hero: {
     position: "relative",
@@ -282,46 +182,13 @@ const STYLES = {
   },
 };
 
-// Rows come back from Postgres in snake_case, but EntryCard reads camelCase.
-// tags is nullable in the table, so fall back to an empty array for the card.
-const toCardEntry = (row) => ({
-  id: row.id,
-  titleKhmer: row.title_khmer,
-  titleEnglish: row.title_english,
-  category: row.category,
-  descriptionKhmer: row.description_khmer,
-  descriptionEnglish: row.description_english,
-  seasonOrMonth: row.season_or_month,
-  source: row.source,
-  imagePath: row.image_path,
-  tags: row.tags ?? [],
-});
-
 const Home = () => {
   const [lang, setLang] = useState("km");
   const [query, setQuery] = useState("");
-  const [userEmail, setUserEmail] = useState(null);
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
   const t = getTranslations(lang).home;
-
-  // Track the signed-in user through the browser Supabase client so the
-  // header can show their email + a logout button (or login/signup links).
-  useEffect(() => {
-    let mounted = true;
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (mounted && data?.user?.email) setUserEmail(data.user.email);
-    });
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUserEmail(session?.user?.email ?? null);
-    });
-    return () => {
-      mounted = false;
-      sub.subscription.unsubscribe();
-    };
-  }, []);
 
   // Read every entry from the archive table, newest first. The select policy
   // is open to anon + authenticated, so this works signed out too.
@@ -346,10 +213,6 @@ const Home = () => {
     };
   }, []);
 
-  const handleLogout = async () => {
-    await createClient().auth.signOut();
-  };
-
   const q = query.trim().toLowerCase();
   const results = entries.filter((entry) => {
     if (!q) return true;
@@ -366,49 +229,7 @@ const Home = () => {
 
   return (
     <main style={STYLES.main} lang={lang}>
-      <header style={STYLES.header}>
-        <span className="brand" style={STYLES.brand}>
-          {t.brand}
-        </span>
-        <div style={STYLES.toggle} role="group" aria-label="Language">
-          <button
-            className="toggle-btn"
-            style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-            onClick={() => setLang("km")}
-          >
-            <span className="short-label">KH</span>
-            <span className="full-label">Khmer</span>
-          </button>
-          <button
-            className="toggle-btn"
-            style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-            onClick={() => setLang("en")}
-          >
-            <span className="short-label">EN</span>
-            <span className="full-label">English</span>
-          </button>
-        </div>
-        {userEmail ? (
-          <div style={STYLES.auth}>
-            <span style={STYLES.userEmail}>{userEmail}</span>
-            <Link href="/contribute" style={STYLES.authLink}>
-              {t.contributeTitle}
-            </Link>
-            <button style={STYLES.logoutBtn} onClick={handleLogout}>
-              {t.logoutTitle}
-            </button>
-          </div>
-        ) : (
-          <div style={STYLES.auth}>
-            <Link href="/login" style={STYLES.authLink}>
-              {t.loginTitle}
-            </Link>
-            <Link href="/signup" style={STYLES.authLink}>
-              {t.signUpTitle}
-            </Link>
-          </div>
-        )}
-      </header>
+      <TopBar lang={lang} onLangChange={setLang} />
 
       <section style={STYLES.hero}>
         <div style={STYLES.heroInner}>

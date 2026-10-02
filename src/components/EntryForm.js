@@ -22,7 +22,8 @@ const EMPTY_VALUES = {
 // The single entry form. /contribute and the edit page both render this, so
 // they always share the same fields and validation rules.
 // `onSave(values)` must return { id } on success, or { error } with a short
-// message to show the user.
+// message to show the user. After a successful save we send the user to their
+// profile.
 const EntryForm = ({
   lang,
   initialValues,
@@ -30,6 +31,7 @@ const EntryForm = ({
   submitLabel,
   submittingLabel,
   photoHint,
+  redirectTo = "/profile",
   onSave,
 }) => {
   const router = useRouter();
@@ -69,7 +71,7 @@ const EntryForm = ({
         setFormError(result.error);
         return;
       }
-      router.push(`/entry/${result.id}`);
+      router.push(redirectTo);
     } catch (unexpected) {
       console.error("Unexpected error while saving entry:", unexpected);
       setFormError(t.errorGeneric);

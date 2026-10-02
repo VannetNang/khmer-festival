@@ -50,7 +50,7 @@ const STYLES = {
 
 // Shows Edit and Delete only to the entry's owner. Delete asks for
 // confirmation, then removes the row and checks that a row actually came back.
-const EntryOwnerControls = ({ entryId, isOwner, lang }) => {
+const EntryOwnerControls = ({ entryId, isOwner, lang, onDeleted }) => {
   const router = useRouter();
   const t = getTranslations(lang).entry;
   const [deleting, setDeleting] = useState(false);
@@ -70,7 +70,11 @@ const EntryOwnerControls = ({ entryId, isOwner, lang }) => {
         setMessage(t.changeNotSaved);
         return;
       }
-      router.push("/");
+      if (onDeleted) {
+        onDeleted(entryId);
+      } else {
+        router.push("/");
+      }
     } catch (unexpected) {
       console.error("Unexpected error while deleting entry:", unexpected);
       setMessage(t.changeNotSaved);
