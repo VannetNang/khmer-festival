@@ -41,6 +41,48 @@ const en = {
     haveAccount: "Already have an account?",
     loginLink: "Sign in",
   },
+  contribute: {
+    title: "Add an entry",
+    subtitle: "Share a Khmer festival with the archive.",
+    checking: "Checking your session…",
+    loginPrompt: "Only signed-in contributors can add entries.",
+    loginLink: "Log in to continue",
+    submit: "Save entry",
+    submitting: "Saving…",
+    photoHint: "JPEG, PNG, or WebP — up to 5 MB.",
+    selectCategory: "Select a category",
+    selectMonth: "Select a month",
+    errorUpload:
+      "We couldn't upload your photo. Check the file and try again.",
+    errorSave:
+      "We couldn't save your entry. Please review the form and try again.",
+    errorSession: "Your session has expired. Please log in again and retry.",
+    errorGeneric: "Something went wrong. Please try again in a moment.",
+    fields: {
+      titleKhmer: "Title (Khmer)",
+      titleEnglish: "Title (English)",
+      category: "Category",
+      descriptionKhmer: "Description (Khmer)",
+      descriptionEnglish: "Description (English)",
+      month: "Month",
+      source: "Source",
+      tags: "Tags",
+      photo: "Photo",
+    },
+    errors: {
+      titleKhmer: "Enter a Khmer title of 1–120 characters.",
+      titleEnglish:
+        "Enter an English title of 1–120 characters using Latin letters.",
+      descriptionKhmer: "Enter a Khmer description (up to 10,000 characters).",
+      descriptionEnglish:
+        "Enter an English description (up to 10,000 characters) using Latin letters.",
+      source: "Enter a source (up to 255 characters).",
+      month: "Choose a month from the list.",
+      category: "Choose a category from the list.",
+      tags: "Choose only from the listed tags.",
+      photo: "Add a JPEG, PNG, or WebP photo up to 5 MB.",
+    },
+  },
 };
 
 export default en;
