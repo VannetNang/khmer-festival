@@ -7,13 +7,14 @@ import BackLink from "../../../../components/BackLink.js";
 import EditEntryForm from "../../../../components/EditEntryForm.js";
 import { createClient } from "../../../../lib/supabase/client.js";
 import { getTranslations } from "../../../../lib/i18n/index.js";
+import { useLanguage } from "../../../../lib/i18n/LanguageProvider.js";
 import "../../../contribute/contribute.css";
 
 // Edit page: same shared form as /contribute, pre-filled with the entry.
 // Only the owner is allowed to edit; anyone else is told they cannot.
 export default function EditEntryPage() {
   const { id } = useParams();
-  const [lang, setLang] = useState("km");
+  const { lang } = useLanguage();
   const [status, setStatus] = useState("loading");
   const [entry, setEntry] = useState(null);
   const t = getTranslations(lang).contribute;
@@ -60,23 +61,7 @@ export default function EditEntryPage() {
     <main className="contribute-page" lang={lang}>
       <div className="contribute-card">
         <div className="contribute-top">
-          <BackLink lang={lang} href={`/entry/${id}`} />
-          <div className="toggle" role="group" aria-label="Language">
-            <button
-              type="button"
-              className={lang === "km" ? "toggle-btn toggle-active" : "toggle-btn"}
-              onClick={() => setLang("km")}
-            >
-              KH
-            </button>
-            <button
-              type="button"
-              className={lang === "en" ? "toggle-btn toggle-active" : "toggle-btn"}
-              onClick={() => setLang("en")}
-            >
-              EN
-            </button>
-          </div>
+          <BackLink href="/profile" />
         </div>
 
         <h1 className="c-title">{te.editTitle}</h1>

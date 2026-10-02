@@ -1,15 +1,14 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { login } from "./actions";
+import { useRouter } from "next/navigation";
+import { createClient } from "../../lib/supabase/client.js";
 import { getTranslations } from "../../lib/i18n";
+import { useLanguage } from "../../lib/i18n/LanguageProvider";
+import { FONT } from "../../lib/styles/fonts";
 import BackLink from "../../components/BackLink";
-
-// Visual style mirrors the home page: dark theme, inline style objects,
-// and the same brand colors.
-const FONT =
-  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
+import Spinner from "../../components/Spinner";
 
 const STYLES = {
   main: {
@@ -35,40 +34,6 @@ const STYLES = {
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 20,
-  },
-  toggle: {
-    display: "flex",
-    gap: 4,
-    backgroundColor: "#14181F",
-    border: "1px solid #2E3644",
-    borderRadius: 999,
-    padding: 3,
-    alignItems: "center",
-    width: "fit-content",
-  },
-  toggleBtn: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 600,
-    height: 30,
-    padding: "0 14px",
-    borderRadius: 999,
-    border: "none",
-    backgroundColor: "transparent",
-    color: "#97A1B3",
-    cursor: "pointer",
-  },
-  toggleBtnActive: {
-    fontFamily: FONT,
-    fontSize: 13,
-    fontWeight: 700,
-    height: 30,
-    padding: "0 14px",
-    borderRadius: 999,
-    border: "none",
-    backgroundColor: "#2EE6A8",
-    color: "#14181F",
-    cursor: "pointer",
   },
   title: { fontSize: 26, fontWeight: 700, margin: "0 0 6px", color: "#E8EDF2" },
   subtitle: { fontSize: 14, color: "#97A1B3", margin: "0 0 24px" },
@@ -102,6 +67,10 @@ const STYLES = {
     padding: "10px 12px",
   },
   button: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
     width: "100%",
     padding: "12px 14px",
     fontSize: 16,
@@ -125,35 +94,46 @@ const STYLES = {
 };
 
 export default function LoginPage() {
-  const [lang, setLang] = useState("km");
-  const [state, formAction, pending] = useActionState(login, { error: null });
+  const router = useRouter();
+  const { lang } = useLanguage();
   const t = getTranslations(lang).login;
+  const [error, setError] = useState(null);
+  const [pending, setPending] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const email = String(formData.get("email") || "");
+    const password = String(formData.get("password") || "");
+
+    setError(null);
+    setPending(true);
+    try {
+      const supabase = createClient();
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) {
+        setError(t.errorInvalid);
+        return;
+      }
+      router.push("/");
+      router.refresh();
+    } catch (unexpected) {
+      console.error("Sign-in failed:", unexpected);
+      setError(t.errorGeneric);
+    } finally {
+      setPending(false);
+    }
+  };
 
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.card}>
-        <div style={STYLES.topRow}>
-          <BackLink lang={lang} />
-          <div style={STYLES.toggle} role="group" aria-label="Language">
-            <button
-              style={lang === "km" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-              onClick={() => setLang("km")}
-              type="button"
-            >
-              KH
-            </button>
-            <button
-              style={lang === "en" ? STYLES.toggleBtnActive : STYLES.toggleBtn}
-              onClick={() => setLang("en")}
-              type="button"
-            >
-              EN
-            </button>
-          </div>
-        </div>
         <h1 style={STYLES.title}>{t.title}</h1>
         <p style={STYLES.subtitle}>{t.subtitle}</p>
-        <form action={formAction}>
+        <form onSubmit={handleSubmit}>
           <label style={STYLES.field}>
             <span style={STYLES.label}>{t.emailLabel}</span>
             <input type="email" name="email" required style={STYLES.input} />
@@ -167,7 +147,7 @@ export default function LoginPage() {
               style={STYLES.input}
             />
           </label>
-          {state.error && <p style={STYLES.error}>{state.error}</p>}
+          {error && <p style={STYLES.error}>{error}</p>}
           <button
             type="submit"
             disabled={pending}
@@ -177,6 +157,7 @@ export default function LoginPage() {
                 : STYLES.button
             }
           >
+            {pending ? <Spinner /> : null}
             {pending ? t.submitting : t.submit}
           </button>
         </form>

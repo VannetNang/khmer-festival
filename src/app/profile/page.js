@@ -2,15 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import TopBar from "../../components/TopBar.js";
 import ProfileEntryCard from "../../components/ProfileEntryCard.js";
 import { createClient } from "../../lib/supabase/client.js";
 import { getTranslations } from "../../lib/i18n/index.js";
+import { useLanguage } from "../../lib/i18n/LanguageProvider.js";
+import { FONT } from "../../lib/styles/fonts.js";
 import { toCardEntry } from "../../lib/entries/toCardEntry.js";
 import "../home.css";
-
-const FONT =
-  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
 
 const STYLES = {
   main: {
@@ -59,7 +57,7 @@ const STYLES = {
 
 // Profile: the signed-in contributor's own entries, each with Edit/Delete.
 export default function ProfilePage() {
-  const [lang, setLang] = useState("km");
+  const { lang } = useLanguage();
   const [status, setStatus] = useState("checking");
   const [entries, setEntries] = useState([]);
   const t = getTranslations(lang).profile;
@@ -103,8 +101,6 @@ export default function ProfilePage() {
 
   return (
     <main style={STYLES.main} lang={lang}>
-      <TopBar lang={lang} onLangChange={setLang} />
-
       <div style={STYLES.content}>
         <h1 style={STYLES.heading}>{t.title}</h1>
         <p style={STYLES.subtitle}>{t.subtitle}</p>

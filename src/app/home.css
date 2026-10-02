@@ -87,12 +87,7 @@ body {
   overflow-x: hidden;
   overflow-y: none;
   scrollbar-gutter: stable;
-  font-family:
-    "Kantumruy Pro",
-    "Inter",
-    system-ui,
-    -apple-system,
-    sans-serif;
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
 }
 
 /* ============================================================

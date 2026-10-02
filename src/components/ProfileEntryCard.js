@@ -12,6 +12,7 @@ const ProfileEntryCard = ({ entry, lang, onDeleted }) => (
     actions={
       <EntryOwnerControls
         entryId={entry.id}
+        entryTitle={lang === "km" ? entry.titleKhmer : entry.titleEnglish}
         isOwner
         lang={lang}
         onDeleted={onDeleted}

@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "../lib/supabase/client.js";
 import { deleteArchiveEntry } from "../lib/supabase/deleteArchiveEntry.js";
 import { getTranslations } from "../lib/i18n/index.js";
-
-const FONT =
-  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
+import { FONT } from "../lib/styles/fonts.js";
+import ConfirmDialog from "./ConfirmDialog.js";
 
 const STYLES = {
   row: {
@@ -50,17 +49,27 @@ const STYLES = {
 
 // Shows Edit and Delete only to the entry's owner. Delete asks for
 // confirmation, then removes the row and checks that a row actually came back.
-const EntryOwnerControls = ({ entryId, isOwner, lang, onDeleted }) => {
+const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted }) => {
   const router = useRouter();
   const t = getTranslations(lang).entry;
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (!isOwner) return null;
 
-  const handleDelete = async () => {
-    if (!window.confirm(t.deleteConfirm)) return;
+  const trimmedTitle = entryTitle?.trim();
+  const confirmMessage = trimmedTitle ? (
+    <>
+      {t.deleteQuestion}{" "}
+      <strong className="confirm-subject">{`"${trimmedTitle}"`}</strong>
+      {t.deleteWarning}
+    </>
+  ) : (
+    t.deleteMessage
+  );
 
+  const confirmDelete = async () => {
     setMessage(null);
     setDeleting(true);
 
@@ -80,6 +89,7 @@ const EntryOwnerControls = ({ entryId, isOwner, lang, onDeleted }) => {
       setMessage(t.changeNotSaved);
     } finally {
       setDeleting(false);
+      setConfirmOpen(false);
     }
   };
 
@@ -90,16 +100,29 @@ const EntryOwnerControls = ({ entryId, isOwner, lang, onDeleted }) => {
       </Link>
       <button
         type="button"
-        onClick={handleDelete}
+        onClick={() => setConfirmOpen(true)}
         disabled={deleting}
         style={deleting ? { ...STYLES.delete, ...STYLES.deleteDisabled } : STYLES.delete}
       >
-        {deleting ? t.deleting : t.delete}
+        {t.delete}
       </button>
       {message ? (
         <p style={STYLES.message} role="alert">
           {message}
         </p>
+      ) : null}
+
+      {confirmOpen ? (
+        <ConfirmDialog
+          title={t.deleteTitle}
+          message={confirmMessage}
+          confirmLabel={t.delete}
+          cancelLabel={t.deleteCancel}
+          busyLabel={t.deleting}
+          busy={deleting}
+          onConfirm={confirmDelete}
+          onCancel={() => setConfirmOpen(false)}
+        />
       ) : null}
     </div>
   );

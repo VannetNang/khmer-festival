@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { FONT } from "../lib/styles/fonts.js";
+import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
-
-const FONT =
-  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
 
 const STYLES = {
   link: {
@@ -20,7 +19,8 @@ const STYLES = {
   },
 };
 
-export default function BackLink({ lang, href = "/" }) {
+export default function BackLink({ href = "/" }) {
+  const { lang } = useLanguage();
   const t = getTranslations(lang).common;
 
   return (

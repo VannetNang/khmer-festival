@@ -6,6 +6,7 @@ import { getTranslations } from "../lib/i18n/index.js";
 import { validateEntry } from "../lib/validation/entry.js";
 import EntryContentFields from "./EntryContentFields.js";
 import EntryMetaFields from "./EntryMetaFields.js";
+import Spinner from "./Spinner.js";
 
 const EMPTY_VALUES = {
   titleKhmer: "",
@@ -105,6 +106,7 @@ const EntryForm = ({
       ) : null}
 
       <button type="submit" className="c-submit" disabled={submitting}>
+        {submitting ? <Spinner /> : null}
         {submitting ? submittingLabel : submitLabel}
       </button>
     </form>

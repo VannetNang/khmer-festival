@@ -2,14 +2,12 @@
 
 import { useEffect, useState } from "react";
 import EntryCard from "../components/EntryCard.js";
-import TopBar from "../components/TopBar.js";
 import { createClient } from "../lib/supabase/client.js";
 import { getTranslations } from "../lib/i18n/index.js";
+import { useLanguage } from "../lib/i18n/LanguageProvider.js";
+import { FONT } from "../lib/styles/fonts.js";
 import { toCardEntry } from "../lib/entries/toCardEntry.js";
 import "./home.css";
-
-const FONT =
-  "'Kantumruy Pro', 'Inter', 'Noto Sans Khmer', system-ui, -apple-system, sans-serif";
 
 const COPY = {
   km: {
@@ -183,7 +181,7 @@ const STYLES = {
 };
 
 const Home = () => {
-  const [lang, setLang] = useState("km");
+  const { lang } = useLanguage();
   const [query, setQuery] = useState("");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -229,8 +227,6 @@ const Home = () => {
 
   return (
     <main style={STYLES.main} lang={lang}>
-      <TopBar lang={lang} onLangChange={setLang} />
-
       <section style={STYLES.hero}>
         <div style={STYLES.heroInner}>
           <p style={STYLES.kicker}>{t.kicker}</p>

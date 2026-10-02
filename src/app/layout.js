@@ -1,4 +1,7 @@
 import collection from "../../collection.config.js";
+import { LanguageProvider } from "../lib/i18n/LanguageProvider.js";
+import { AuthProvider } from "../lib/auth/AuthProvider.js";
+import AppShell from "../components/AppShell.js";
 
 export const metadata = {
   title: `${collection.name} — Khmer Living Archive`,
@@ -8,17 +11,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          backgroundColor: "#14181F",
-          color: "#E8EDF2",
-          fontFamily:
-            "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-          minHeight: "100vh",
-        }}
-      >
-        {children}
+      <body>
+        <LanguageProvider>
+          <AuthProvider>
+            <AppShell>{children}</AppShell>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

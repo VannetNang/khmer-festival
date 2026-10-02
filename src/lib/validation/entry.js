@@ -18,17 +18,39 @@ export const MONTHS = [
   "December",
 ];
 
-// The categories the archive already uses for its sample entries.
+// The categories a contributor can file an entry under.
 export const CATEGORIES = [
-  "National Holiday",
-  "Religious Festival",
-  "National Festival",
-  "Religious Holiday",
-  "Royal Ceremony",
-  "Royal Holiday",
+  "Religious Observances",
+  "Royal & National Events",
+  "Seasonal & Agricultural",
+  "Cultural & Arts",
+  "Local & Regional Traditions",
 ];
 
-export const TAG_OPTIONS = ["Holiday", "Buddhism", "Celebration"];
+// Every tag a contributor can attach to an entry. An entry may use any
+// combination of these (the form is multi-select); any other value fails
+// validation.
+export const TAG_OPTIONS = [
+  "Holiday",
+  "Buddhism",
+  "Celebration",
+  "Royal Ceremony",
+  "Cultural Heritage",
+  "National Holiday",
+  "Harvest",
+  "Rainy Season",
+  "Water & River",
+  "Lunar Calendar",
+  "Ancestors",
+  "Blessing",
+  "Pagoda Ritual",
+  "Procession",
+  "Traditional Games",
+  "Classical Dance",
+  "Shadow Puppet",
+  "Traditional Music",
+  "Boat Racing",
+];
 
 // Photo limits. Allowed MIME type -> file extension. The extension is derived
 // from this table, never from the user-supplied file name.
