@@ -135,6 +135,11 @@ const km = {
     signedOut: "អ្នកមិនទាន់ចូលគណនីទេ។",
     preferences: "ចំណូលចិត្ត និងសកម្មភាព",
   },
+  theme: {
+    label: "រចនាប័ទ្ម",
+    light: "ភ្លឺ",
+    dark: "ងងឹត",
+  },
 };
 
 export default km;

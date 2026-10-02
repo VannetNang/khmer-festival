@@ -139,6 +139,11 @@ const en = {
     signedOut: "You are not signed in.",
     preferences: "Preferences & actions",
   },
+  theme: {
+    label: "Theme",
+    light: "Light",
+    dark: "Dark",
+  },
 };
 
 export default en;

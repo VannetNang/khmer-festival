@@ -15,30 +15,37 @@ import { FONT } from "../../../lib/styles/fonts.js";
 const STYLES = {
   main: {
     minHeight: "100vh",
-    backgroundColor: "#14181F",
-    color: "#E8EDF2",
+    backgroundColor: "var(--bg)",
+    color: "var(--text)",
     fontFamily: FONT,
     padding: "24px",
   },
   wrap: { maxWidth: 1000, margin: "0 auto" },
+  header: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+    flexWrap: "wrap",
+    marginBottom: 20,
+  },
   back: {
     display: "inline-flex",
     alignItems: "center",
     gap: 8,
-    marginBottom: 20,
     padding: "8px 16px",
     borderRadius: 999,
-    border: "1px solid #2E3644",
-    backgroundColor: "#1C222C",
-    color: "#E8EDF2",
+    border: "1px solid var(--border)",
+    backgroundColor: "var(--surface)",
+    color: "var(--text)",
     fontSize: 13,
     fontWeight: 600,
     textDecoration: "none",
   },
-  status: { fontSize: 15, color: "#B9C1CE", margin: "16px 0 0" },
+  status: { fontSize: 15, color: "var(--text-muted)", margin: "16px 0 0" },
   card: {
-    backgroundColor: "#1C222C",
-    border: "1px solid #2E3644",
+    backgroundColor: "var(--surface)",
+    border: "1px solid var(--border)",
     borderRadius: 16,
     overflow: "hidden",
   },
@@ -47,7 +54,7 @@ const STYLES = {
     aspectRatio: "16 / 9",
     objectFit: "cover",
     display: "block",
-    backgroundColor: "#14181F",
+    backgroundColor: "var(--bg)",
   },
   body: { padding: "28px 32px 32px" },
   category: {
@@ -55,49 +62,49 @@ const STYLES = {
     fontWeight: 700,
     letterSpacing: 1,
     textTransform: "uppercase",
-    color: "#2EE6A8",
+    color: "var(--accent-text)",
     margin: 0,
   },
   titleKhmer: { fontSize: 26, fontWeight: 700, margin: "10px 0 2px", lineHeight: 1.4 },
-  titleEnglish: { fontSize: 18, fontWeight: 600, color: "#B9C1CE", margin: "0 0 12px" },
-  meta: { fontSize: 13, color: "#7FD8B4", margin: "0 0 20px" },
+  titleEnglish: { fontSize: 18, fontWeight: 600, color: "var(--text-muted)", margin: "0 0 12px" },
+  meta: { fontSize: 13, color: "var(--season)", margin: "0 0 20px" },
   section: { marginBottom: 20 },
   sectionLabel: {
     fontSize: 12,
     fontWeight: 700,
     letterSpacing: 1,
     textTransform: "uppercase",
-    color: "#97A1B3",
+    color: "var(--text-dim)",
     margin: "0 0 6px",
   },
   paragraph: {
     fontSize: 15,
     lineHeight: 1.7,
-    color: "#E8EDF2",
+    color: "var(--text)",
     margin: "0 0 10px",
     whiteSpace: "pre-line",
   },
   paragraphEn: {
     fontSize: 14,
     lineHeight: 1.7,
-    color: "#B9C1CE",
+    color: "var(--text-muted)",
     margin: 0,
     whiteSpace: "pre-line",
   },
   tags: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 },
   tag: {
     fontSize: 12,
-    color: "#97A1B3",
-    backgroundColor: "#14181F",
-    border: "1px solid #2E3644",
+    color: "var(--text-dim)",
+    backgroundColor: "var(--bg)",
+    border: "1px solid var(--border)",
     borderRadius: 999,
     padding: "3px 11px",
   },
   source: {
     fontSize: 13,
     lineHeight: 1.6,
-    color: "#B9C1CE",
-    borderTop: "1px solid #2E3644",
+    color: "var(--text-muted)",
+    borderTop: "1px solid var(--border)",
     paddingTop: 16,
     margin: 0,
   },
@@ -151,10 +158,21 @@ export default function EntryPage() {
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.wrap}>
-        <Link href={backHref} style={STYLES.back}>
-          <span aria-hidden="true">←</span>
-          {common.back}
-        </Link>
+        <div style={STYLES.header}>
+          <Link href={backHref} style={STYLES.back}>
+            <span aria-hidden="true">←</span>
+            {common.back}
+          </Link>
+          {entry ? (
+            <EntryOwnerControls
+              entryId={entry.id}
+              entryTitle={lang === "km" ? entry.title_khmer : entry.title_english}
+              isOwner={isOwner}
+              lang={lang}
+              inline
+            />
+          ) : null}
+        </div>
 
         {status === "loading" ? (
           <p style={STYLES.status}>{t.loading}</p>
@@ -162,12 +180,6 @@ export default function EntryPage() {
           <p style={STYLES.status}>{t.notFound}</p>
         ) : (
           <>
-            <EntryOwnerControls
-              entryId={entry.id}
-              entryTitle={lang === "km" ? entry.title_khmer : entry.title_english}
-              isOwner={isOwner}
-              lang={lang}
-            />
             <article style={STYLES.card}>
               {entry.image_path ? (
                 <img

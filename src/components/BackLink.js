@@ -13,7 +13,7 @@ const STYLES = {
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 600,
-    color: "#97A1B3",
+    color: "var(--text-dim)",
     textDecoration: "none",
     marginBottom: 20,
   },

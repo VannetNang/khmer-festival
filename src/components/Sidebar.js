@@ -8,6 +8,7 @@ import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
 import { HomeIcon, PlusIcon, DashboardIcon, GearIcon } from "./AppIcons.js";
 import LanguageToggle from "./LanguageToggle.js";
+import ThemeToggle from "./ThemeToggle.js";
 import Spinner from "./Spinner.js";
 import { isNavActive } from "../lib/nav/isNavActive.js";
 
@@ -21,6 +22,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const router = useRouter();
   const t = getTranslations(lang).nav;
+  const tt = getTranslations(lang).theme;
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
   const wrapRef = useRef(null);
@@ -85,6 +87,10 @@ const Sidebar = () => {
             <div className="sidebar-popover" role="dialog" aria-label={t.settings}>
               <p className="popover-title">{t.language}</p>
               <LanguageToggle />
+              <p className="popover-title" style={{ marginTop: 16 }}>
+                {tt.label}
+              </p>
+              <ThemeToggle />
             </div>
           ) : null}
           <button

@@ -5,8 +5,8 @@ const styles = {
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#1C222C",
-    border: "1px solid #2E3644",
+    backgroundColor: "var(--surface)",
+    border: "1px solid var(--border)",
     borderRadius: 14,
     overflow: "hidden",
   },
@@ -15,7 +15,7 @@ const styles = {
     aspectRatio: "16 / 9",
     objectFit: "cover",
     display: "block",
-    backgroundColor: "#14181F",
+    backgroundColor: "var(--bg)",
   },
   body: {
     display: "flex",
@@ -28,13 +28,13 @@ const styles = {
     fontWeight: 700,
     letterSpacing: 1,
     textTransform: "uppercase",
-    color: "#2EE6A8",
+    color: "var(--accent-text)",
     margin: 0,
   },
   title: {
     fontSize: 20,
     fontWeight: 700,
-    color: "#E8EDF2",
+    color: "var(--text)",
     margin: "6px 0 4px",
     lineHeight: 1.35,
     minHeight: "2.7em", // Fixed space for up to 2 lines
@@ -45,13 +45,13 @@ const styles = {
   },
   season: {
     fontSize: 13,
-    color: "#7FD8B4",
+    color: "var(--season)",
     margin: "0 0 12px",
     minHeight: "1.3em", // Ensures missing/short seasons maintain line height
   },
   description: {
     fontSize: 14,
-    color: "#B9C1CE",
+    color: "var(--text-muted)",
     lineHeight: 1.6,
     margin: "0 0 16px",
     minHeight: "4.8em", // Fixed space for up to 3 lines
@@ -68,20 +68,20 @@ const styles = {
   },
   tag: {
     fontSize: 12,
-    color: "#97A1B3",
-    backgroundColor: "#14181F",
-    border: "1px solid #2E3644",
+    color: "var(--text-dim)",
+    backgroundColor: "var(--bg)",
+    border: "1px solid var(--border)",
     borderRadius: 999,
     padding: "3px 11px",
   },
   source: {
     fontSize: 11,
     lineHeight: 1.5,
-    color: "#7A8494",
+    color: "var(--text-faint)",
     margin: 0,
     marginTop: 14,
     paddingTop: 12,
-    borderTop: "1px solid #2E3644",
+    borderTop: "1px solid var(--border)",
     display: "-webkit-box",
     WebkitLineClamp: 2,
     WebkitBoxOrient: "vertical",
@@ -89,21 +89,22 @@ const styles = {
   },
   sourceLabel: {
     fontWeight: 700,
-    color: "#B9C1CE",
+    color: "var(--text-muted)",
   },
   actions: {
     marginTop: 14,
   },
   explore: {
     alignSelf: "flex-start",
+    width: "50%",
     display: "inline-flex",
     alignItems: "center",
     gap: 6,
     marginTop: 16,
     padding: "9px 16px",
     borderRadius: 999,
-    border: "1px solid #2EE6A8",
-    color: "#2EE6A8",
+    border: "1px solid var(--accent-text)",
+    color: "var(--accent-text)",
     fontSize: 13,
     fontWeight: 700,
     textDecoration: "none",
@@ -113,11 +114,11 @@ const styles = {
 const COPY = {
   km: {
     sourceLabel: "ប្រភព៖",
-    explore: "មើលលម្អិត",
+    explore: "មើលលម្អិតបន្ថែម",
   },
   en: {
     sourceLabel: "Source:",
-    explore: "Explore",
+    explore: "Explore more",
   },
 };
 

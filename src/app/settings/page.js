@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import BackLink from "../../components/BackLink.js";
 import LanguageToggle from "../../components/LanguageToggle.js";
+import ThemeToggle from "../../components/ThemeToggle.js";
 import Spinner from "../../components/Spinner.js";
 import { useAuth } from "../../lib/auth/AuthProvider.js";
 import { useLanguage } from "../../lib/i18n/LanguageProvider.js";
@@ -15,16 +15,16 @@ const STYLES = {
   main: {
     minHeight: "100vh",
     padding: "24px",
-    backgroundColor: "#14181F",
-    color: "#E8EDF2",
+    backgroundColor: "var(--bg)",
+    color: "var(--text)",
     fontFamily: FONT,
   },
   wrap: { maxWidth: 640, margin: "0 auto" },
-  title: { fontSize: 26, fontWeight: 700, margin: "0 0 6px", color: "#E8EDF2" },
-  subtitle: { fontSize: 14, color: "#97A1B3", margin: "0 0 24px" },
+  title: { fontSize: 26, fontWeight: 700, margin: "0 0 6px", color: "var(--text)" },
+  subtitle: { fontSize: 14, color: "var(--text-dim)", margin: "0 0 24px" },
   section: {
-    backgroundColor: "#1C222C",
-    border: "1px solid #2E3644",
+    backgroundColor: "var(--surface)",
+    border: "1px solid var(--border)",
     borderRadius: 14,
     padding: "20px 22px",
     marginBottom: 18,
@@ -34,7 +34,7 @@ const STYLES = {
     fontWeight: 700,
     letterSpacing: 1,
     textTransform: "uppercase",
-    color: "#97A1B3",
+    color: "var(--text-dim)",
     margin: "0 0 14px",
   },
   accountRow: { display: "flex", alignItems: "center", gap: 14 },
@@ -45,21 +45,21 @@ const STYLES = {
     width: 48,
     height: 48,
     borderRadius: "50%",
-    backgroundColor: "#2EE6A8",
-    color: "#14181F",
+    backgroundColor: "var(--accent)",
+    color: "var(--accent-contrast)",
     fontSize: 20,
     fontWeight: 700,
     flexShrink: 0,
   },
-  accountName: { margin: 0, fontSize: 16, fontWeight: 700, color: "#E8EDF2" },
-  accountEmail: { margin: "2px 0 0", fontSize: 13, color: "#97A1B3" },
-  muted: { margin: 0, fontSize: 14, color: "#B9C1CE" },
-  link: { color: "#2EE6A8", fontWeight: 600, textDecoration: "none" },
+  accountName: { margin: 0, fontSize: 16, fontWeight: 700, color: "var(--text)" },
+  accountEmail: { margin: "2px 0 0", fontSize: 13, color: "var(--text-dim)" },
+  muted: { margin: 0, fontSize: 14, color: "var(--text-muted)" },
+  link: { color: "var(--accent-text)", fontWeight: 600, textDecoration: "none" },
   label: {
     display: "block",
     fontSize: 13,
     fontWeight: 600,
-    color: "#B9C1CE",
+    color: "var(--text-muted)",
     marginBottom: 10,
   },
   logout: {
@@ -73,9 +73,9 @@ const STYLES = {
     fontSize: 15,
     fontWeight: 700,
     fontFamily: FONT,
-    color: "#FF5C5C",
+    color: "var(--danger)",
     backgroundColor: "transparent",
-    border: "1px solid rgba(255,92,92,0.5)",
+    border: "1px solid var(--danger-border-strong)",
     borderRadius: 10,
     cursor: "pointer",
   },
@@ -88,6 +88,7 @@ export default function SettingsPage() {
   const { user, loading, signOut } = useAuth();
   const t = getTranslations(lang).settings;
   const nav = getTranslations(lang).nav;
+  const themeT = getTranslations(lang).theme;
   const name = user?.user_metadata?.display_name || user?.email?.split("@")[0] || "";
   const [loggingOut, setLoggingOut] = useState(false);
 
@@ -104,8 +105,6 @@ export default function SettingsPage() {
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.wrap}>
-        <BackLink />
-
         <h1 style={STYLES.title}>{t.title}</h1>
         <p style={STYLES.subtitle}>{t.subtitle}</p>
 
@@ -135,6 +134,8 @@ export default function SettingsPage() {
           <h2 style={STYLES.sectionTitle}>{t.preferences}</h2>
           <span style={STYLES.label}>{nav.language}</span>
           <LanguageToggle />
+          <span style={{ ...STYLES.label, marginTop: 18 }}>{themeT.label}</span>
+          <ThemeToggle />
           {user ? (
             <button
               type="button"

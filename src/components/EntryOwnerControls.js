@@ -17,12 +17,19 @@ const STYLES = {
     gap: 12,
     marginBottom: 20,
   },
+  rowInline: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 12,
+    justifyContent: "flex-end",
+  },
   edit: {
     fontFamily: FONT,
     fontSize: 14,
     fontWeight: 600,
-    color: "#14181F",
-    backgroundColor: "#2EE6A8",
+    color: "var(--accent-contrast)",
+    backgroundColor: "var(--accent)",
     padding: "8px 18px",
     borderRadius: 999,
     textDecoration: "none",
@@ -31,9 +38,9 @@ const STYLES = {
     fontFamily: FONT,
     fontSize: 14,
     fontWeight: 600,
-    color: "#FF5C5C",
+    color: "var(--danger)",
     backgroundColor: "transparent",
-    border: "1px solid rgba(255,92,92,0.5)",
+    border: "1px solid var(--danger-border-strong)",
     padding: "8px 18px",
     borderRadius: 999,
     cursor: "pointer",
@@ -42,14 +49,14 @@ const STYLES = {
   message: {
     fontFamily: FONT,
     fontSize: 14,
-    color: "#FF5C5C",
+    color: "var(--danger)",
     margin: 0,
   },
 };
 
 // Shows Edit and Delete only to the entry's owner. Delete asks for
 // confirmation, then removes the row and checks that a row actually came back.
-const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted }) => {
+const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted, inline = false }) => {
   const router = useRouter();
   const t = getTranslations(lang).entry;
   const [deleting, setDeleting] = useState(false);
@@ -94,7 +101,7 @@ const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted }) =
   };
 
   return (
-    <div style={STYLES.row}>
+    <div style={inline ? STYLES.rowInline : STYLES.row}>
       <Link href={`/entry/${entryId}/edit`} style={STYLES.edit}>
         {t.edit}
       </Link>
