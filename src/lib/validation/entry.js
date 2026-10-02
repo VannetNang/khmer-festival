@@ -45,7 +45,7 @@ const LATIN_RE = /[A-Za-z]/;
 // Returns an object keyed by field name for every field that fails a rule.
 // An empty object means the entry is ready to submit. The UI maps each key to
 // a short message shown next to that field.
-export function validateEntry(values, photo) {
+export function validateEntry(values, photo, photoRequired = true) {
   const errors = {};
 
   const titleKhmer = values.titleKhmer.trim();
@@ -89,9 +89,11 @@ export function validateEntry(values, photo) {
     errors.tags = true;
   }
 
-  if (!photo) {
-    errors.photo = true;
-  } else if (!PHOTO_TYPES[photo.type] || photo.size > MAX_PHOTO_BYTES) {
+  if (photo) {
+    if (!PHOTO_TYPES[photo.type] || photo.size > MAX_PHOTO_BYTES) {
+      errors.photo = true;
+    }
+  } else if (photoRequired) {
     errors.photo = true;
   }
 

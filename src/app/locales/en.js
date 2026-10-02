@@ -20,6 +20,7 @@ const en = {
     loginTitle: "Login",
     signUpTitle: "Sign Up",
     logoutTitle: "Logout",
+    contributeTitle: "Contribute",
   },
   login: {
     title: "Sign in",
@@ -82,6 +83,25 @@ const en = {
       tags: "Choose only from the listed tags.",
       photo: "Add a JPEG, PNG, or WebP photo up to 5 MB.",
     },
+  },
+  entry: {
+    loading: "Loading entry…",
+    notFound: "Entry not found.",
+    khmerLabel: "Khmer",
+    englishLabel: "English",
+    tagsLabel: "Tags",
+    sourceLabel: "Source",
+    edit: "Edit",
+    delete: "Delete",
+    deleting: "Deleting…",
+    deleteConfirm: "Delete this entry? This cannot be undone.",
+    changeNotSaved: "That change wasn't saved",
+    save: "Save changes",
+    saving: "Saving…",
+    editTitle: "Edit entry",
+    editSubtitle: "Update the details of this entry.",
+    forbidden: "You can only edit entries you own.",
+    photoOptionalHint: "Leave empty to keep the current photo.",
   },
 };
 

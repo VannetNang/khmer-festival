@@ -8,6 +8,7 @@ const EntryMetaFields = ({
   values,
   errors,
   t,
+  photoHint,
   onChange,
   onToggleTag,
   onPhotoChange,
@@ -66,7 +67,7 @@ const EntryMetaFields = ({
       id="photo"
       label={t.fields.photo}
       error={errors.photo && t.errors.photo}
-      hint={t.photoHint}
+      hint={photoHint}
     >
       <input
         id="photo"

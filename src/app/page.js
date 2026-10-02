@@ -391,6 +391,9 @@ const Home = () => {
         {userEmail ? (
           <div style={STYLES.auth}>
             <span style={STYLES.userEmail}>{userEmail}</span>
+            <Link href="/contribute" style={STYLES.authLink}>
+              {t.contributeTitle}
+            </Link>
             <button style={STYLES.logoutBtn} onClick={handleLogout}>
               {t.logoutTitle}
             </button>
