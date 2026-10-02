@@ -8,6 +8,7 @@ import { deleteArchiveEntry } from "../lib/supabase/deleteArchiveEntry.js";
 import { getTranslations } from "../lib/i18n/index.js";
 import { FONT } from "../lib/styles/fonts.js";
 import ConfirmDialog from "./ConfirmDialog.js";
+import Spinner from "./Spinner.js";
 
 const STYLES = {
   row: {
@@ -25,6 +26,10 @@ const STYLES = {
     justifyContent: "flex-end",
   },
   edit: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
     fontFamily: FONT,
     fontSize: 14,
     fontWeight: 600,
@@ -34,6 +39,7 @@ const STYLES = {
     borderRadius: 999,
     textDecoration: "none",
   },
+  editBusy: { opacity: 0.7, cursor: "default" },
   delete: {
     fontFamily: FONT,
     fontSize: 14,
@@ -62,6 +68,7 @@ const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted, inl
   const [deleting, setDeleting] = useState(false);
   const [message, setMessage] = useState(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [navigating, setNavigating] = useState(false);
 
   if (!isOwner) return null;
 
@@ -102,8 +109,21 @@ const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted, inl
 
   return (
     <div style={inline ? STYLES.rowInline : STYLES.row}>
-      <Link href={`/entry/${entryId}/edit`} style={STYLES.edit}>
-        {t.edit}
+      <Link
+        href={`/entry/${entryId}/edit`}
+        style={navigating ? { ...STYLES.edit, ...STYLES.editBusy } : STYLES.edit}
+        onClick={(event) => {
+          event.stopPropagation();
+          if (navigating) {
+            event.preventDefault();
+            return;
+          }
+          setNavigating(true);
+        }}
+        aria-busy={navigating}
+      >
+        {navigating ? <Spinner /> : null}
+        {navigating ? t.opening : t.edit}
       </Link>
       <button
         type="button"

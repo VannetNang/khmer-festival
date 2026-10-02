@@ -14,7 +14,7 @@
 
 .contribute-card {
   width: 100%;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 16px 0 64px;
   padding: 32px;
   box-sizing: border-box;
@@ -92,7 +92,7 @@
 }
 
 textarea.c-input {
-  min-height: 120px;
+  min-height: 200px;
   line-height: 1.6;
   resize: vertical;
 }

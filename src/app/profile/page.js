@@ -22,7 +22,7 @@ const STYLES = {
     overflowX: "hidden",
   },
   content: {
-    maxWidth: 1100,
+    maxWidth: 1300,
     width: "100%",
     margin: "0 auto",
     padding: "40px 16px 64px",

@@ -6,7 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
-import { HomeIcon, PlusIcon, DashboardIcon, GearIcon } from "./AppIcons.js";
+import {
+  HomeIcon,
+  PlusIcon,
+  DashboardIcon,
+  GearIcon,
+  SparklesIcon,
+} from "./AppIcons.js";
 import LanguageToggle from "./LanguageToggle.js";
 import ThemeToggle from "./ThemeToggle.js";
 import Spinner from "./Spinner.js";
@@ -65,6 +71,9 @@ const Sidebar = () => {
   return (
     <aside className="app-sidebar">
       <div className="sidebar-top">
+        <span className="brand-icon">
+          <SparklesIcon size={18} />
+        </span>
         <span className="sidebar-title">{t.appTitle}</span>
       </div>
 

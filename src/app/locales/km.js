@@ -81,6 +81,8 @@ const km = {
   },
   entry: {
     loading: "កំពុងទាញយកពិធីបុណ្យ…",
+    opening: "កំពុងផ្ទុក...",
+    explore: "ស្វែងយល់បន្ថែម",
     notFound: "រកមិនឃើញពិធីបុណ្យនេះទេ។",
     khmerLabel: "ខ្មែរ",
     englishLabel: "អង់គ្លេស",

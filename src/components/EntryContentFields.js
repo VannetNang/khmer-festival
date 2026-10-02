@@ -64,7 +64,7 @@ const EntryContentFields = ({ values, errors, t, onChange }) => (
         id="descriptionKhmer"
         className="c-input"
         lang="km"
-        rows={5}
+        rows={8}
         value={values.descriptionKhmer}
         onChange={onChange("descriptionKhmer")}
       />
@@ -78,7 +78,7 @@ const EntryContentFields = ({ values, errors, t, onChange }) => (
       <textarea
         id="descriptionEnglish"
         className="c-input"
-        rows={5}
+        rows={8}
         value={values.descriptionEnglish}
         onChange={onChange("descriptionEnglish")}
       />

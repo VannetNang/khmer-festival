@@ -66,3 +66,10 @@ export const MoonIcon = ({ size }) => (
     <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
   </Icon>
 );
+
+export const SparklesIcon = ({ size }) => (
+  <Icon size={size}>
+    <path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5z" />
+    <path d="M18.5 14.5l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9.9-2.3z" />
+  </Icon>
+);

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ExploreButton from "./ExploreButton.js";
 
 const styles = {
   card: {
@@ -9,6 +9,7 @@ const styles = {
     border: "1px solid var(--border)",
     borderRadius: 14,
     overflow: "hidden",
+    width: "400px"
   },
   image: {
     width: "100%",
@@ -37,9 +38,9 @@ const styles = {
     color: "var(--text)",
     margin: "6px 0 4px",
     lineHeight: 1.35,
-    minHeight: "2.7em", // Fixed space for up to 2 lines
+    minHeight: "1.35em", // Fixed single-line height keeps every card uniform
     display: "-webkit-box",
-    WebkitLineClamp: 2,
+    WebkitLineClamp: 1,
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
   },
@@ -94,31 +95,14 @@ const styles = {
   actions: {
     marginTop: 14,
   },
-  explore: {
-    alignSelf: "flex-start",
-    width: "50%",
-    display: "inline-flex",
-    alignItems: "center",
-    gap: 6,
-    marginTop: 16,
-    padding: "9px 16px",
-    borderRadius: 999,
-    border: "1px solid var(--accent-text)",
-    color: "var(--accent-text)",
-    fontSize: 13,
-    fontWeight: 700,
-    textDecoration: "none",
-  },
 };
 
 const COPY = {
   km: {
     sourceLabel: "ប្រភព៖",
-    explore: "មើលលម្អិតបន្ថែម",
   },
   en: {
     sourceLabel: "Source:",
-    explore: "Explore more",
   },
 };
 
@@ -128,7 +112,6 @@ const EntryCard = ({ entry, lang, from = "home", actions }) => {
     lang === "km" ? entry.descriptionKhmer : entry.descriptionEnglish;
   const src = entry.imagePath.replace(/ /g, "%20");
   const t = COPY[lang] ?? COPY.en;
-  const exploreHref = `/entry/${entry.id}?from=${from}`;
 
   return (
     <div className="card-cell" style={styles.card}>
@@ -151,10 +134,7 @@ const EntryCard = ({ entry, lang, from = "home", actions }) => {
             {entry.source}
           </p>
         )}
-        <Link href={exploreHref} style={styles.explore}>
-          {t.explore}
-          <span aria-hidden="true">→</span>
-        </Link>
+        <ExploreButton entryId={entry.id} from={from} lang={lang} />
         {actions ? <div style={styles.actions}>{actions}</div> : null}
       </div>
     </div>

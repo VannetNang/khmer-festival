@@ -65,11 +65,11 @@ const STYLES = {
     boxSizing: "border-box",
   },
   kicker: {
-    fontFamily: "'Courier New', monospace",
-    fontSize: 13,
+    fontFamily: FONT,
+    fontSize: 16,
+    fontWeight: 700,
     letterSpacing: 2,
     textTransform: "uppercase",
-    color: "var(--hero-accent)",
     margin: "0 0 8px 0",
   },
   heroTitle: {
@@ -104,7 +104,7 @@ const STYLES = {
     boxSizing: "border-box",
   },
   content: {
-    maxWidth: 1100,
+    maxWidth: 1400,
     width: "100%",
     margin: "0 auto",
     padding: "32px 16px 64px",
@@ -125,9 +125,9 @@ const STYLES = {
   resultCount: {
     fontFamily: "'Courier New', monospace",
     fontSize: 14,
-    color: "var(--accent-text)",
     margin: 0,
     letterSpacing: 0.5,
+    fontWeight: 700
   },
   resetInline: {
     fontFamily: FONT,
@@ -169,7 +169,7 @@ const STYLES = {
     cursor: "pointer",
   },
   footer: {
-    maxWidth: 1100,
+    maxWidth: 1400,
     width: "100%",
     margin: "0 auto",
     padding: "24px 16px 48px",

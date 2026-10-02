@@ -85,6 +85,8 @@ const en = {
   },
   entry: {
     loading: "Loading entry…",
+    opening: "Loading...",
+    explore: "Explore More",
     notFound: "Entry not found.",
     khmerLabel: "Khmer",
     englishLabel: "English",

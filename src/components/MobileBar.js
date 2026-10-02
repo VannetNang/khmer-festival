@@ -6,7 +6,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
-import { DashboardIcon, PlusIcon, GearIcon, GlobeIcon } from "./AppIcons.js";
+import {
+  HomeIcon,
+  DashboardIcon,
+  PlusIcon,
+  GearIcon,
+  GlobeIcon,
+  SparklesIcon,
+} from "./AppIcons.js";
 import Spinner from "./Spinner.js";
 import { isNavActive } from "../lib/nav/isNavActive.js";
 
@@ -36,7 +43,10 @@ const MobileBar = () => {
     <>
       <header className="mobile-topbar">
         <Link href="/" className="mobile-title">
-          {t.appTitle}
+          <span className="brand-icon">
+            <SparklesIcon size={18} />
+          </span>
+          <span className="mobile-title-text">{t.appTitle}</span>
         </Link>
 
         <div className="mobile-topbar-right">
@@ -80,13 +90,13 @@ const MobileBar = () => {
 
       <nav className="mobile-bottomnav">
         <Link
-          href="/profile"
+          href="/"
           className={
-            isNavActive(pathname, "/profile") ? "mobile-nav-item is-active" : "mobile-nav-item"
+            isNavActive(pathname, "/") ? "mobile-nav-item is-active" : "mobile-nav-item"
           }
         >
-          <DashboardIcon size={20} />
-          {t.dashboard}
+          <HomeIcon size={20} />
+          {t.home}
         </Link>
         <Link
           href="/contribute"
@@ -96,6 +106,15 @@ const MobileBar = () => {
         >
           <PlusIcon size={20} />
           {t.createEntry}
+        </Link>
+        <Link
+          href="/profile"
+          className={
+            isNavActive(pathname, "/profile") ? "mobile-nav-item is-active" : "mobile-nav-item"
+          }
+        >
+          <DashboardIcon size={20} />
+          {t.dashboard}
         </Link>
         <Link
           href="/settings"

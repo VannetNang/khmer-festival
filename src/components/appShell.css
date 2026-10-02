@@ -253,13 +253,20 @@ select {
 }
 
 .mobile-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
   font-size: 15px;
   font-weight: 700;
   color: var(--text);
   text-decoration: none;
-  white-space: nowrap;
+}
+
+.mobile-title-text {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mobile-topbar-right {
@@ -554,7 +561,7 @@ select {
   --danger-border-strong: rgba(255, 92, 92, 0.5);
   --hero-text: #e8edf2;
   --hero-text-muted: #b9c1ce;
-  --hero-accent: #2ee6a8;
+  --hero-accent: #34d344;
   --hero-overlay-top: rgba(14, 18, 24, 0.7);
   --hero-overlay-bottom: rgba(20, 24, 31, 0.7);
   --hero-input-bg: rgba(14, 18, 24, 0.85);
@@ -581,7 +588,7 @@ select {
   --danger-border-strong: rgba(217, 58, 58, 0.45);
   --hero-text: #14181f;
   --hero-text-muted: #3d4650;
-  --hero-accent: #0a8a54;
+  --hero-accent: #059669;
   --hero-overlay-top: rgba(255, 255, 255, 0.3);
   --hero-overlay-bottom: rgba(255, 255, 255, 0.4);
   --hero-input-bg: rgba(255, 255, 255, 1);
@@ -614,5 +621,38 @@ select {
   color: var(--accent-contrast);
   background-color: var(--accent);
   border-color: var(--accent-text);
+}
+
+/* ---------------- Brand icon + Explore button ---------------- */
+
+.brand-icon {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-text);
+  flex-shrink: 0;
+}
+
+.explore-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 50%;
+  margin-top: 16px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--accent-text);
+  background-color: transparent;
+  color: var(--accent-text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.explore-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
 }
 
