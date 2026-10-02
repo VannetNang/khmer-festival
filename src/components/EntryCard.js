@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const styles = {
   card: {
     height: "100%",
@@ -92,23 +94,40 @@ const styles = {
   actions: {
     marginTop: 14,
   },
+  explore: {
+    alignSelf: "flex-start",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 16,
+    padding: "9px 16px",
+    borderRadius: 999,
+    border: "1px solid #2EE6A8",
+    color: "#2EE6A8",
+    fontSize: 13,
+    fontWeight: 700,
+    textDecoration: "none",
+  },
 };
 
 const COPY = {
   km: {
     sourceLabel: "ប្រភព៖",
+    explore: "មើលលម្អិត",
   },
   en: {
     sourceLabel: "Source:",
+    explore: "Explore",
   },
 };
 
-const EntryCard = ({ entry, lang, actions }) => {
+const EntryCard = ({ entry, lang, from = "home", actions }) => {
   const title = lang === "km" ? entry.titleKhmer : entry.titleEnglish;
   const description =
     lang === "km" ? entry.descriptionKhmer : entry.descriptionEnglish;
   const src = entry.imagePath.replace(/ /g, "%20");
   const t = COPY[lang] ?? COPY.en;
+  const exploreHref = `/entry/${entry.id}?from=${from}`;
 
   return (
     <div className="card-cell" style={styles.card}>
@@ -131,6 +150,10 @@ const EntryCard = ({ entry, lang, actions }) => {
             {entry.source}
           </p>
         )}
+        <Link href={exploreHref} style={styles.explore}>
+          {t.explore}
+          <span aria-hidden="true">→</span>
+        </Link>
         {actions ? <div style={styles.actions}>{actions}</div> : null}
       </div>
     </div>

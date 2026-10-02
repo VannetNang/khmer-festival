@@ -271,7 +271,7 @@ const Home = () => {
           <ul className="card-grid">
             {results.map((entry) => (
               <li key={entry.id} className="card-cell">
-                <EntryCard entry={entry} lang={lang} />
+                <EntryCard entry={entry} lang={lang} from="home" />
               </li>
             ))}
           </ul>

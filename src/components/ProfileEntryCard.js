@@ -9,6 +9,7 @@ const ProfileEntryCard = ({ entry, lang, onDeleted }) => (
   <EntryCard
     entry={entry}
     lang={lang}
+    from="profile"
     actions={
       <EntryOwnerControls
         entryId={entry.id}

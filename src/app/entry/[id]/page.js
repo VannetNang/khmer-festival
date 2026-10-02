@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import BackLink from "../../../components/BackLink.js";
 import EntryOwnerControls from "../../../components/EntryOwnerControls.js";
 import { createClient } from "../../../lib/supabase/client.js";
 import { getTranslations } from "../../../lib/i18n/index.js";
@@ -20,12 +20,20 @@ const STYLES = {
     fontFamily: FONT,
     padding: "24px",
   },
-  wrap: { maxWidth: 760, margin: "0 auto" },
-  top: {
-    display: "flex",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    gap: 12,
+  wrap: { maxWidth: 1000, margin: "0 auto" },
+  back: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 20,
+    padding: "8px 16px",
+    borderRadius: 999,
+    border: "1px solid #2E3644",
+    backgroundColor: "#1C222C",
+    color: "#E8EDF2",
+    fontSize: 13,
+    fontWeight: 600,
+    textDecoration: "none",
   },
   status: { fontSize: 15, color: "#B9C1CE", margin: "16px 0 0" },
   card: {
@@ -62,8 +70,20 @@ const STYLES = {
     color: "#97A1B3",
     margin: "0 0 6px",
   },
-  paragraph: { fontSize: 15, lineHeight: 1.7, color: "#E8EDF2", margin: "0 0 10px" },
-  paragraphEn: { fontSize: 14, lineHeight: 1.7, color: "#B9C1CE", margin: 0 },
+  paragraph: {
+    fontSize: 15,
+    lineHeight: 1.7,
+    color: "#E8EDF2",
+    margin: "0 0 10px",
+    whiteSpace: "pre-line",
+  },
+  paragraphEn: {
+    fontSize: 14,
+    lineHeight: 1.7,
+    color: "#B9C1CE",
+    margin: 0,
+    whiteSpace: "pre-line",
+  },
   tags: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 },
   tag: {
     fontSize: 12,
@@ -89,7 +109,15 @@ export default function EntryPage() {
   const [status, setStatus] = useState("loading");
   const [entry, setEntry] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [backHref, setBackHref] = useState("/");
   const t = getTranslations(lang).entry;
+  const common = getTranslations(lang).common;
+
+  // Send the user back to the list they came from (Home or Dashboard).
+  useEffect(() => {
+    const from = new URLSearchParams(window.location.search).get("from");
+    setBackHref(from === "profile" ? "/profile" : "/");
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -123,9 +151,10 @@ export default function EntryPage() {
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.wrap}>
-        <div style={STYLES.top}>
-          <BackLink />
-        </div>
+        <Link href={backHref} style={STYLES.back}>
+          <span aria-hidden="true">←</span>
+          {common.back}
+        </Link>
 
         {status === "loading" ? (
           <p style={STYLES.status}>{t.loading}</p>
