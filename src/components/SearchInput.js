@@ -14,6 +14,12 @@ const styles = {
     maxWidth: 520,
     padding: "12px 20px",
     fontSize: 15,
+    // Khmer can stack a coeng + subscript consonant and still add a vowel below
+    // the baseline (e.g. ស្បុ). A text input clips ink outside its line box, so a
+    // tight line-height cuts off that bottom vowel. A generous line-height grows
+    // the line box to hold the whole cluster, and Latin text sits comfortably in
+    // the same space.
+    lineHeight: 2,
     fontFamily: FONT,
     borderRadius: 999,
     border: "1px solid var(--border-strong)",
