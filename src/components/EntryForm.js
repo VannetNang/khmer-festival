@@ -32,6 +32,7 @@ const EntryForm = ({
   submitLabel,
   submittingLabel,
   photoHint,
+  existingPhotoUrl = null,
   redirectTo = "/profile",
   onSave,
 }) => {
@@ -53,8 +54,7 @@ const EntryForm = ({
         : [...prev.tags, tag],
     }));
 
-  const handlePhoto = (event) =>
-    setValues((prev) => ({ ...prev, photo: event.target.files?.[0] ?? null }));
+  const handlePhoto = (file) => setValues((prev) => ({ ...prev, photo: file }));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -94,6 +94,7 @@ const EntryForm = ({
         errors={errors}
         t={t}
         photoHint={photoHint ?? t.photoHint}
+        existingPhotoUrl={existingPhotoUrl}
         onChange={update}
         onToggleTag={toggleTag}
         onPhotoChange={handlePhoto}

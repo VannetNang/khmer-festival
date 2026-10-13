@@ -26,7 +26,10 @@ const ConfirmDialog = ({
   return (
     <div
       className="confirm-backdrop"
-      onClick={() => {
+      onClick={(event) => {
+        // The dialog can be rendered inside a clickable card, so stop the
+        // event here instead of letting it trigger card navigation.
+        event.stopPropagation();
         if (!busy) onCancel();
       }}
     >

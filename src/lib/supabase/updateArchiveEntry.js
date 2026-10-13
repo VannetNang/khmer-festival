@@ -1,3 +1,5 @@
+import { uploadEntryPhoto } from "./uploadEntryPhoto.js";
+
 // Updates an entry's content. The photo is optional: when a new file is given
 // it is uploaded first and replaces image_path; otherwise the existing path is
 // kept. owner is never changed here.

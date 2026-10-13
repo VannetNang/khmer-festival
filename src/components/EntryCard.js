@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import ExploreButton from "./ExploreButton.js";
 
 const styles = {
@@ -9,7 +12,8 @@ const styles = {
     border: "1px solid var(--border)",
     borderRadius: 14,
     overflow: "hidden",
-    width: "400px"
+    width: "400px",
+    cursor: "pointer",
   },
   image: {
     width: "100%",
@@ -60,6 +64,10 @@ const styles = {
     WebkitLineClamp: 3,
     WebkitBoxOrient: "vertical",
     overflow: "hidden",
+    // Long unspaced English strings (e.g. a pasted URL) must wrap instead of
+    // bursting out of the card.
+    overflowWrap: "anywhere",
+    wordBreak: "break-word",
   },
   tags: {
     display: "flex",
@@ -107,14 +115,36 @@ const COPY = {
 };
 
 const EntryCard = ({ entry, lang, from = "home", actions }) => {
+  const router = useRouter();
   const title = lang === "km" ? entry.titleKhmer : entry.titleEnglish;
   const description =
     lang === "km" ? entry.descriptionKhmer : entry.descriptionEnglish;
   const src = entry.imagePath.replace(/ /g, "%20");
   const t = COPY[lang] ?? COPY.en;
 
+  // The whole card opens the detail view, not just the "Explore More" button.
+  // Inner controls (Explore, Edit, Delete, confirm dialog) call
+  // event.stopPropagation() so their own clicks never bubble up to here.
+  const openEntry = () => router.push(`/entry/${entry.id}?from=${from}`);
+
+  const handleKeyDown = (event) => {
+    // Only react to keys pressed on the card itself, never on a child button.
+    if (event.target !== event.currentTarget) return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openEntry();
+    }
+  };
+
   return (
-    <div className="card-cell" style={styles.card}>
+    <div
+      className="card-cell entry-card"
+      style={styles.card}
+      role="link"
+      tabIndex={0}
+      onClick={openEntry}
+      onKeyDown={handleKeyDown}
+    >
       <img src={src} alt={title} style={styles.image} loading="lazy" />
       <div style={styles.body}>
         <p style={styles.category}>{entry.category}</p>

@@ -2,13 +2,15 @@
 
 import { MONTHS, TAG_OPTIONS } from "../lib/validation/entry.js";
 import EntryFormField from "./EntryFormField.js";
+import PhotoField from "./PhotoField.js";
 
-// The metadata fields: month, source, tags, and the required photo.
+// The metadata fields: month, source, tags, and the photo.
 const EntryMetaFields = ({
   values,
   errors,
   t,
   photoHint,
+  existingPhotoUrl,
   onChange,
   onToggleTag,
   onPhotoChange,
@@ -63,20 +65,13 @@ const EntryMetaFields = ({
       </div>
     </EntryFormField>
 
-    <EntryFormField
-      id="photo"
-      label={t.fields.photo}
+    <PhotoField
+      t={t}
       error={errors.photo && t.errors.photo}
       hint={photoHint}
-    >
-      <input
-        id="photo"
-        className="c-input"
-        type="file"
-        accept="image/jpeg,image/png,image/webp"
-        onChange={onPhotoChange}
-      />
-    </EntryFormField>
+      existingPhotoUrl={existingPhotoUrl}
+      onSelect={onPhotoChange}
+    />
   </>
 );
 

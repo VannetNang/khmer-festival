@@ -34,6 +34,8 @@ const EditEntryForm = ({ lang, entry }) => {
       entryId: entry.id,
       userId: user.id,
       values,
+      // When no new file was chosen this is null, so updateArchiveEntry keeps
+      // the entry's current image_path instead of failing.
       photo: values.photo,
       currentImagePath: entry.image_path,
     });
@@ -48,6 +50,7 @@ const EditEntryForm = ({ lang, entry }) => {
       lang={lang}
       initialValues={initialValues}
       requirePhoto={false}
+      existingPhotoUrl={entry.image_path}
       submitLabel={te.save}
       submittingLabel={te.saving}
       photoHint={te.photoOptionalHint}

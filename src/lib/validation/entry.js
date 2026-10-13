@@ -63,6 +63,15 @@ export const PHOTO_TYPES = {
 
 const KHMER_RE = /[\u1780-\u17FF]/;
 const LATIN_RE = /[A-Za-z]/;
+const WHITESPACE_RE = /\s/;
+
+// Minimum text lengths. Validation always measures the *trimmed* value, so a
+// field full of spaces counts as empty.
+const TITLE_MIN = 5;
+const TITLE_MAX = 120;
+const DESCRIPTION_MIN = 100;
+const DESCRIPTION_MAX = 10000;
+const SOURCE_MAX = 255;
 
 // Returns an object keyed by field name for every field that fails a rule.
 // An empty object means the entry is ready to submit. The UI maps each key to
@@ -71,35 +80,47 @@ export function validateEntry(values, photo, photoRequired = true) {
   const errors = {};
 
   const titleKhmer = values.titleKhmer.trim();
-  if (!titleKhmer || titleKhmer.length > 120 || !KHMER_RE.test(titleKhmer)) {
+  if (
+    titleKhmer.length < TITLE_MIN ||
+    titleKhmer.length > TITLE_MAX ||
+    !KHMER_RE.test(titleKhmer)
+  ) {
     errors.titleKhmer = true;
   }
 
   const titleEnglish = values.titleEnglish.trim();
-  if (!titleEnglish || titleEnglish.length > 120 || !LATIN_RE.test(titleEnglish)) {
+  if (
+    titleEnglish.length < TITLE_MIN ||
+    titleEnglish.length > TITLE_MAX ||
+    !LATIN_RE.test(titleEnglish)
+  ) {
     errors.titleEnglish = true;
   }
 
   const descriptionKhmer = values.descriptionKhmer.trim();
+  // Khmer has no word spaces, so only the length and the script are checked.
   if (
-    !descriptionKhmer ||
-    descriptionKhmer.length > 10000 ||
+    descriptionKhmer.length < DESCRIPTION_MIN ||
+    descriptionKhmer.length > DESCRIPTION_MAX ||
     !KHMER_RE.test(descriptionKhmer)
   ) {
     errors.descriptionKhmer = true;
   }
 
   const descriptionEnglish = values.descriptionEnglish.trim();
+  // English must be a real paragraph: long enough AND made of separate words,
+  // so one continuous unbroken run of characters is rejected.
   if (
-    !descriptionEnglish ||
-    descriptionEnglish.length > 10000 ||
-    !LATIN_RE.test(descriptionEnglish)
+    descriptionEnglish.length < DESCRIPTION_MIN ||
+    descriptionEnglish.length > DESCRIPTION_MAX ||
+    !LATIN_RE.test(descriptionEnglish) ||
+    !WHITESPACE_RE.test(descriptionEnglish)
   ) {
     errors.descriptionEnglish = true;
   }
 
   const source = values.source.trim();
-  if (!source || source.length > 255) errors.source = true;
+  if (!source || source.length > SOURCE_MAX) errors.source = true;
 
   if (!MONTHS.includes(values.month)) errors.month = true;
   if (!CATEGORIES.includes(values.category)) errors.category = true;

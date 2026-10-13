@@ -127,7 +127,11 @@ const EntryOwnerControls = ({ entryId, entryTitle, isOwner, lang, onDeleted, inl
       </Link>
       <button
         type="button"
-        onClick={() => setConfirmOpen(true)}
+        onClick={(event) => {
+          // Keep the click off the card, which would otherwise navigate away.
+          event.stopPropagation();
+          setConfirmOpen(true);
+        }}
         disabled={deleting}
         style={deleting ? { ...STYLES.delete, ...STYLES.deleteDisabled } : STYLES.delete}
       >

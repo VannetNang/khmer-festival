@@ -83,6 +83,9 @@ const STYLES = {
     color: "var(--text)",
     margin: "0 0 10px",
     whiteSpace: "pre-line",
+    // Khmer/English text with no spaces must wrap inside the card.
+    overflowWrap: "anywhere",
+    wordBreak: "break-word",
   },
   paragraphEn: {
     fontSize: 14,
@@ -90,6 +93,8 @@ const STYLES = {
     color: "var(--text-muted)",
     margin: 0,
     whiteSpace: "pre-line",
+    overflowWrap: "anywhere",
+    wordBreak: "break-word",
   },
   tags: { display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 },
   tag: {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import EntryCard from "../components/EntryCard.js";
+import SearchInput from "../components/SearchInput.js";
 import { createClient } from "../lib/supabase/client.js";
 import { getTranslations } from "../lib/i18n/index.js";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
@@ -84,25 +85,6 @@ const STYLES = {
     color: "var(--hero-text-muted)",
     margin: "0 0 24px 0",
   },
-  search: {
-    display: "flex",
-    justifyContent: "center",
-    width: "100%",
-  },
-  searchInput: {
-    width: "100%",
-    maxWidth: 520,
-    padding: "12px 20px",
-    fontSize: 15,
-    fontFamily: FONT,
-    borderRadius: 999,
-    border: "1px solid var(--border-strong)",
-    backgroundColor: "var(--hero-input-bg)",
-    color: "var(--hero-text)",
-    outline: "none",
-    boxShadow: "0 8px 24px rgba(0,0,0,0.35)",
-    boxSizing: "border-box",
-  },
   content: {
     maxWidth: 1400,
     width: "100%",
@@ -183,6 +165,7 @@ const STYLES = {
 const Home = () => {
   const { lang } = useLanguage();
   const [query, setQuery] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
@@ -225,6 +208,13 @@ const Home = () => {
     return haystack.includes(q);
   });
 
+  // Clears both the committed search term and the text still sitting in the
+  // input, so the hero box and the results stay in step.
+  const resetSearch = () => {
+    setQuery("");
+    setInputValue("");
+  };
+
   return (
     <main style={STYLES.main} lang={lang}>
       <section style={STYLES.hero}>
@@ -232,16 +222,12 @@ const Home = () => {
           <p style={STYLES.kicker}>{t.kicker}</p>
           <h1 style={STYLES.heroTitle}>{t.heroTitle}</h1>
           <p style={STYLES.heroSubtitle}>{t.heroSubtitle}</p>
-          <div style={STYLES.search}>
-            <input
-              type="search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={t.searchPlaceholder}
-              style={STYLES.searchInput}
-              aria-label={t.searchPlaceholder}
-            />
-          </div>
+          <SearchInput
+            value={inputValue}
+            placeholder={t.searchPlaceholder}
+            onChange={setInputValue}
+            onSearch={setQuery}
+          />
         </div>
       </section>
 
@@ -251,7 +237,7 @@ const Home = () => {
             {loading ? t.loading : t.count(results.length)}
           </p>
           {q && (
-            <button style={STYLES.resetInline} onClick={() => setQuery("")}>
+            <button style={STYLES.resetInline} onClick={resetSearch}>
               {t.reset}
             </button>
           )}
@@ -279,7 +265,7 @@ const Home = () => {
           <div style={STYLES.empty}>
             <p style={STYLES.emptyTitle}>{t.emptyTitle}</p>
             <p style={STYLES.emptyText}>{t.emptyText}</p>
-            <button style={STYLES.resetBtn} onClick={() => setQuery("")}>
+            <button style={STYLES.resetBtn} onClick={resetSearch}>
               {t.reset}
             </button>
           </div>

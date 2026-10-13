@@ -50,6 +50,7 @@ const en = {
     submit: "Create Entry",
     submitting: "Creating...",
     photoHint: "JPEG, PNG, or WebP — up to 5 MB.",
+    currentPhoto: "Current photo",
     selectCategory: "Select a category",
     selectMonth: "Select a month",
     errorUpload:
@@ -70,12 +71,11 @@ const en = {
       photo: "Photo",
     },
     errors: {
-      titleKhmer: "Enter a Khmer title of 1–120 characters.",
-      titleEnglish:
-        "Enter an English title of 1–120 characters using Latin letters.",
-      descriptionKhmer: "Enter a Khmer description (up to 10,000 characters).",
+      titleKhmer: "Enter a Khmer title of at least 5 characters.",
+      titleEnglish: "Enter an English title of at least 5 characters.",
+      descriptionKhmer: "Enter a Khmer description of at least 100 characters.",
       descriptionEnglish:
-        "Enter an English description (up to 10,000 characters) using Latin letters.",
+        "Enter an English description of at least 100 characters, with spaces between the words.",
       source: "Enter a source (up to 255 characters).",
       month: "Choose a month from the list.",
       category: "Choose a category from the list.",
