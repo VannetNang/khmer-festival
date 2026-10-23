@@ -12,7 +12,7 @@ const styles = {
     border: "1px solid var(--border)",
     borderRadius: 14,
     overflow: "hidden",
-    width: "400px",
+    width: "100%",
     cursor: "pointer",
   },
   image: {

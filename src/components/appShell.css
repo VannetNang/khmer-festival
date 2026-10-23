@@ -50,7 +50,22 @@ select {
   }
 
   .app-content {
-    margin-left: 260px;
+    /* Must clear the fixed sidebar, which is exactly 320px wide. Any smaller
+       value makes content slide underneath it and get cut off on tablets such
+       as an iPad (768px viewport). */
+    margin-left: 320px;
+  }
+}
+
+/* Tablet range (768-1023px, e.g. iPad portrait): a full 320px sidebar leaves
+   content with less room, so slim the rail down to the icons/text minimum. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .app-sidebar {
+    width: 240px;
+  }
+
+  .app-content {
+    margin-left: 240px;
   }
 }
 
@@ -638,7 +653,10 @@ select {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  width: 50%;
+  /* Fluid: fills narrow cards (e.g. two-column iPad grid) but never grows past
+     ~half a wide desktop card. */
+  width: 100%;
+  max-width: 220px;
   margin-top: 16px;
   padding: 9px 16px;
   border-radius: 999px;

@@ -96,7 +96,12 @@ body {
 
 .card-grid {
   display: grid;
-  grid-template-columns: 1fr;
+  /* Fluid columns: place as many cards as fit (each at least ~300px) and let
+     them share the row evenly. min(100%, 300px) stops a single track from
+     overflowing a very narrow screen. Because this reads the *content* width
+     it automatically accounts for the fixed sidebar, so iPad/tablet layouts
+     never degrade to squeezed columns. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 20px;
   list-style: none;
   padding: 0;
@@ -110,21 +115,13 @@ body {
   height: 100%;
   width: 100%;
   box-sizing: border-box;
+  /* Let long Khmer text or a pasted URL shrink the cell instead of stretching
+     the grid track wider than its share (grid items default to min-width auto). */
+  min-width: 0;
 }
-
-/* ============================================================
-   Media Queries
-   ============================================================ */
 
 @media (min-width: 640px) {
   .card-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 24px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .card-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
