@@ -39,6 +39,17 @@ export const DashboardIcon = ({ size }) => (
   </Icon>
 );
 
+export const ListIcon = ({ size }) => (
+  <Icon size={size}>
+    <path d="M8 6h13" />
+    <path d="M8 12h13" />
+    <path d="M8 18h13" />
+    <path d="M3 6h.01" />
+    <path d="M3 12h.01" />
+    <path d="M3 18h.01" />
+  </Icon>
+);
+
 export const GearIcon = ({ size }) => (
   <Icon size={size}>
     <circle cx="12" cy="12" r="3" />

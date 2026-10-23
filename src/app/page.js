@@ -171,13 +171,15 @@ const Home = () => {
   const [loadFailed, setLoadFailed] = useState(false);
   const t = getTranslations(lang).home;
 
-  // Read every entry from the archive table, newest first. The select policy
-  // is open to anon + authenticated, so this works signed out too.
+  // Read every published entry from the archive table, newest first. The select
+  // policy is open to anon + authenticated, so this works signed out too; the
+  // explicit status filter keeps pending/returned drafts out of the public feed.
   useEffect(() => {
     let mounted = true;
     createClient()
       .from("archive_entries")
       .select("*")
+      .eq("status", "published")
       .order("created_at", { ascending: false })
       .then(({ data, error }) => {
         if (!mounted) return;

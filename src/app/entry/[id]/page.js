@@ -125,10 +125,17 @@ export default function EntryPage() {
   const t = getTranslations(lang).entry;
   const common = getTranslations(lang).common;
 
-  // Send the user back to the list they came from (Home or Dashboard).
+  // Send the user back to the list they came from (Home, Dashboard, or My
+  // Entries).
   useEffect(() => {
     const from = new URLSearchParams(window.location.search).get("from");
-    setBackHref(from === "profile" ? "/profile" : "/");
+    setBackHref(
+      from === "profile"
+        ? "/profile"
+        : from === "my-entries"
+          ? "/my-entries"
+          : "/",
+    );
   }, []);
 
   useEffect(() => {

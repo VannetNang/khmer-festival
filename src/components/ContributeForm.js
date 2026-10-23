@@ -35,6 +35,7 @@ const ContributeForm = ({ lang }) => {
       requirePhoto
       submitLabel={t.submit}
       submittingLabel={t.submitting}
+      successMessage={t.successMessage}
       onSave={handleSave}
     />
   );

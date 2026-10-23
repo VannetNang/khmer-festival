@@ -24,21 +24,38 @@ export async function updateArchiveEntry({
     }
   }
 
+  // Ask the database whether the current user is a reviewer. Only reviewers may
+  // keep an entry published after an edit; everyone else's edit is sent back to
+  // 'pending' so it is reviewed again. If the check fails for any reason we
+  // treat the user as a regular contributor (the safe, pending direction).
+  let isReviewer = false;
+  const { data: reviewerFlag, error: reviewerError } = await supabase.rpc(
+    "is_reviewer",
+  );
+  if (reviewerError) {
+    console.error("is_reviewer check failed:", reviewerError.message);
+  } else {
+    isReviewer = Boolean(reviewerFlag);
+  }
+
+  const patch = {
+    title_khmer: values.titleKhmer.trim(),
+    title_english: values.titleEnglish.trim(),
+    category: values.category,
+    description_khmer: values.descriptionKhmer.trim(),
+    description_english: values.descriptionEnglish.trim(),
+    season_or_month: values.month,
+    source: values.source.trim(),
+    tags: values.tags.length > 0 ? values.tags : null,
+    image_path: imagePath,
+  };
+  if (!isReviewer) patch.status = "pending";
+
   // .select() makes Supabase return the updated rows so we can confirm a row
   // actually came back and was not silently blocked by Row Level Security.
   const { data, error } = await supabase
     .from("archive_entries")
-    .update({
-      title_khmer: values.titleKhmer.trim(),
-      title_english: values.titleEnglish.trim(),
-      category: values.category,
-      description_khmer: values.descriptionKhmer.trim(),
-      description_english: values.descriptionEnglish.trim(),
-      season_or_month: values.month,
-      source: values.source.trim(),
-      tags: values.tags.length > 0 ? values.tags : null,
-      image_path: imagePath,
-    })
+    .update(patch)
     .eq("id", entryId)
     .select();
 

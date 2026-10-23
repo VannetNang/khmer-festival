@@ -9,8 +9,9 @@ import { getTranslations } from "../lib/i18n/index.js";
 import {
   HomeIcon,
   PlusIcon,
-  DashboardIcon,
+  // DashboardIcon,
   GearIcon,
+  ListIcon,
   SparklesIcon,
 } from "./AppIcons.js";
 import LanguageToggle from "./LanguageToggle.js";
@@ -65,7 +66,13 @@ const Sidebar = () => {
   const items = [
     { href: "/", label: t.home, Icon: HomeIcon },
     { href: "/contribute", label: t.createEntry, Icon: PlusIcon },
-    { href: "/profile", label: t.dashboard, Icon: DashboardIcon },
+    // My Entries is only for signed-in contributors; it lists the row owner's
+    // own drafts and their review status.
+    ...(user
+      ? [{ href: "/my-entries", label: t.myEntries, Icon: ListIcon }]
+      : []),
+    // Dashboard (/profile) temporarily disabled — /my-entries covers it.
+    // { href: "/profile", label: t.dashboard, Icon: DashboardIcon },
   ];
 
   return (

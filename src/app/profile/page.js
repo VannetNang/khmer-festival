@@ -1,3 +1,22 @@
+// ============================================================
+// Dashboard (/profile) — DISABLED.
+//
+// The /my-entries page now lists the signed-in user's own
+// entries, so this page became a duplicate. The whole
+// implementation below is commented out (not deleted) so it can
+// be brought back later. A minimal default export is kept so the
+// route still compiles for Next.js; the page simply renders
+// nothing until the code is restored.
+//
+// To restore: delete the commented-out block markers (/* and */)
+// below and remove this "return null" shell component.
+// ============================================================
+
+export default function ProfilePage() {
+  return null;
+}
+
+/*
 "use client";
 
 import { useEffect, useState } from "react";
@@ -141,3 +160,5 @@ export default function ProfilePage() {
     </main>
   );
 }
+*/
+

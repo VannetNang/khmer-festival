@@ -11,6 +11,7 @@ export function toCardEntry(row) {
     seasonOrMonth: row.season_or_month,
     source: row.source,
     imagePath: row.image_path,
+    status: row.status,
     tags: row.tags ?? [],
   };
 }

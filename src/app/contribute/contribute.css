@@ -155,3 +155,54 @@ textarea.c-input {
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+/* Success screen shown after a new contribution is saved for review. */
+.c-success {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.c-success-title {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.c-success-message {
+  margin: 0 auto 24px;
+  max-width: 520px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.c-success-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.c-success-link,
+.c-success-link-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.c-success-link {
+  background-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.c-success-link-secondary {
+  border: 1px solid var(--border-strong);
+  background-color: transparent;
+  color: var(--accent-text);
+}

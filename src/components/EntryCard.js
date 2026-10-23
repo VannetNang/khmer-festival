@@ -22,6 +22,18 @@ const styles = {
     display: "block",
     backgroundColor: "var(--bg)",
   },
+  // Wraps the photo so an optional badge (e.g. review status) can sit on top.
+  imageWrap: {
+    position: "relative",
+  },
+  topRight: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    zIndex: 2,
+    display: "flex",
+    justifyContent: "flex-end",
+  },
   body: {
     display: "flex",
     flexDirection: "column",
@@ -114,7 +126,7 @@ const COPY = {
   },
 };
 
-const EntryCard = ({ entry, lang, from = "home", actions }) => {
+const EntryCard = ({ entry, lang, from = "home", actions, topRight }) => {
   const router = useRouter();
   const title = lang === "km" ? entry.titleKhmer : entry.titleEnglish;
   const description =
@@ -145,7 +157,10 @@ const EntryCard = ({ entry, lang, from = "home", actions }) => {
       onClick={openEntry}
       onKeyDown={handleKeyDown}
     >
-      <img src={src} alt={title} style={styles.image} loading="lazy" />
+      <div style={styles.imageWrap}>
+        <img src={src} alt={title} style={styles.image} loading="lazy" />
+        {topRight ? <div style={styles.topRight}>{topRight}</div> : null}
+      </div>
       <div style={styles.body}>
         <p style={styles.category}>{entry.category}</p>
         <h3 style={styles.title}>{title}</h3>

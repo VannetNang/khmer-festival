@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getTranslations } from "../lib/i18n/index.js";
 import { validateEntry } from "../lib/validation/entry.js";
@@ -23,8 +24,9 @@ const EMPTY_VALUES = {
 // The single entry form. /contribute and the edit page both render this, so
 // they always share the same fields and validation rules.
 // `onSave(values)` must return { id } on success, or { error } with a short
-// message to show the user. After a successful save we send the user to their
-// profile.
+// message to show the user. After a successful save we either show a success
+// message (when `successMessage` is given, e.g. for new contributions) or
+// send the user to `redirectTo` (the default behaviour for edits).
 const EntryForm = ({
   lang,
   initialValues,
@@ -34,6 +36,7 @@ const EntryForm = ({
   photoHint,
   existingPhotoUrl = null,
   redirectTo = "/profile",
+  successMessage = null,
   onSave,
 }) => {
   const router = useRouter();
@@ -42,6 +45,7 @@ const EntryForm = ({
   const [errors, setErrors] = useState({});
   const [formError, setFormError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const update = (field) => (event) =>
     setValues((prev) => ({ ...prev, [field]: event.target.value }));
@@ -72,7 +76,13 @@ const EntryForm = ({
         setFormError(result.error);
         return;
       }
-      router.push(redirectTo);
+      // A successMessage means "stay here and confirm receipt" (new
+      // contributions); otherwise redirect as callers did before.
+      if (successMessage) {
+        setSubmitted(true);
+      } else {
+        router.push(redirectTo);
+      }
     } catch (unexpected) {
       console.error("Unexpected error while saving entry:", unexpected);
       setFormError(t.errorGeneric);
@@ -80,6 +90,25 @@ const EntryForm = ({
       setSubmitting(false);
     }
   };
+
+  // New contributions replace the whole form with a confirmation screen; the
+  // entry has gone to review instead of being published for everyone.
+  if (submitted && successMessage) {
+    return (
+      <div className="c-success" role="status">
+        <p className="c-success-title">{t.successTitle}</p>
+        <p className="c-success-message">{successMessage}</p>
+        <div className="c-success-actions">
+          <Link href="/my-entries" className="c-success-link">
+            {t.successViewEntries}
+          </Link>
+          <Link href="/" className="c-success-link-secondary">
+            {t.successGoHome}
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form className="contribute-form" onSubmit={handleSubmit} noValidate>

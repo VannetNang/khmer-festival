@@ -8,9 +8,10 @@ import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
 import {
   HomeIcon,
-  DashboardIcon,
+  // DashboardIcon,
   PlusIcon,
   GearIcon,
+  ListIcon,
   GlobeIcon,
   SparklesIcon,
 } from "./AppIcons.js";
@@ -107,6 +108,18 @@ const MobileBar = () => {
           <PlusIcon size={20} />
           {t.createEntry}
         </Link>
+        {user ? (
+          <Link
+            href="/my-entries"
+            className={
+              isNavActive(pathname, "/my-entries") ? "mobile-nav-item is-active" : "mobile-nav-item"
+            }
+          >
+            <ListIcon size={20} />
+            {t.myEntries}
+          </Link>
+        ) : null}
+        {/* Dashboard (/profile) temporarily disabled — /my-entries covers it.
         <Link
           href="/profile"
           className={
@@ -116,6 +129,7 @@ const MobileBar = () => {
           <DashboardIcon size={20} />
           {t.dashboard}
         </Link>
+        */}
         <Link
           href="/settings"
           className={
