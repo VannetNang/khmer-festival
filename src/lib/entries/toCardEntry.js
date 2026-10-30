@@ -3,6 +3,7 @@
 export function toCardEntry(row) {
   return {
     id: row.id,
+    createdAt: row.created_at,
     titleKhmer: row.title_khmer,
     titleEnglish: row.title_english,
     category: row.category,

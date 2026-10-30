@@ -6,12 +6,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
+import { createClient } from "../lib/supabase/client.js";
 import {
   HomeIcon,
   PlusIcon,
   // DashboardIcon,
   GearIcon,
   ListIcon,
+  ReviewIcon,
   SparklesIcon,
 } from "./AppIcons.js";
 import LanguageToggle from "./LanguageToggle.js";
@@ -32,7 +34,23 @@ const Sidebar = () => {
   const tt = getTranslations(lang).theme;
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isReviewer, setIsReviewer] = useState(false);
   const wrapRef = useRef(null);
+
+  // /review is a reviewer-only screen, so the nav asks the database before
+  // showing it — and re-asks whenever the signed-in user changes.
+  useEffect(() => {
+    let mounted = true;
+    createClient()
+      .rpc("is_reviewer")
+      .then(({ data }) => {
+        if (mounted) setIsReviewer(data === true);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, [user]);
 
   // Close the settings popover on outside click or Escape.
   useEffect(() => {
@@ -70,6 +88,10 @@ const Sidebar = () => {
     // own drafts and their review status.
     ...(user
       ? [{ href: "/my-entries", label: t.myEntries, Icon: ListIcon }]
+      : []),
+    // Review is only for reviewers.
+    ...(isReviewer
+      ? [{ href: "/review", label: t.review, Icon: ReviewIcon }]
       : []),
     // Dashboard (/profile) temporarily disabled — /my-entries covers it.
     // { href: "/profile", label: t.dashboard, Icon: DashboardIcon },

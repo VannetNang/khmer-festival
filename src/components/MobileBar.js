@@ -1,17 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { useAuth } from "../lib/auth/AuthProvider.js";
 import { getTranslations } from "../lib/i18n/index.js";
+import { createClient } from "../lib/supabase/client.js";
 import {
   HomeIcon,
   // DashboardIcon,
   PlusIcon,
   GearIcon,
   ListIcon,
+  ReviewIcon,
   GlobeIcon,
   SparklesIcon,
 } from "./AppIcons.js";
@@ -29,6 +31,22 @@ const MobileBar = () => {
   const router = useRouter();
   const t = getTranslations(lang).nav;
   const [loggingOut, setLoggingOut] = useState(false);
+  const [isReviewer, setIsReviewer] = useState(false);
+
+  // /review is a reviewer-only screen, so the nav asks the database before
+  // showing it — and re-asks whenever the signed-in user changes.
+  useEffect(() => {
+    let mounted = true;
+    createClient()
+      .rpc("is_reviewer")
+      .then(({ data }) => {
+        if (mounted) setIsReviewer(data === true);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, [user]);
 
   const handleLogout = async () => {
     setLoggingOut(true);
@@ -117,6 +135,17 @@ const MobileBar = () => {
           >
             <ListIcon size={20} />
             {t.myEntries}
+          </Link>
+        ) : null}
+        {isReviewer ? (
+          <Link
+            href="/review"
+            className={
+              isNavActive(pathname, "/review") ? "mobile-nav-item is-active" : "mobile-nav-item"
+            }
+          >
+            <ReviewIcon size={20} />
+            {t.review}
           </Link>
         ) : null}
         {/* Dashboard (/profile) temporarily disabled — /my-entries covers it.

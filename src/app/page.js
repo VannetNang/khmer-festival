@@ -99,10 +99,18 @@ const STYLES = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: 12,
+    flexWrap: "wrap",
     marginBottom: 20,
     minHeight: 24,
     width: "100%",
     boxSizing: "border-box",
+  },
+  rowRight: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    flexWrap: "wrap",
   },
   resultCount: {
     fontFamily: "'Courier New', monospace",
@@ -110,6 +118,17 @@ const STYLES = {
     margin: 0,
     letterSpacing: 0.5,
     fontWeight: 700
+  },
+  sort: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 600,
+    color: "var(--text)",
+    backgroundColor: "var(--surface)",
+    border: "1px solid var(--border-strong)",
+    borderRadius: 999,
+    padding: "8px 14px",
+    cursor: "pointer",
   },
   resetInline: {
     fontFamily: FONT,
@@ -169,9 +188,12 @@ const Home = () => {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadFailed, setLoadFailed] = useState(false);
+  // Queue-style sort for the public feed; oldest first is the default.
+  const [sortOrder, setSortOrder] = useState("oldest");
   const t = getTranslations(lang).home;
 
-  // Read every published entry from the archive table, newest first. The select
+  // Read every published entry from the archive table, oldest first (the feed's
+  // default order; the sort dropdown re-orders the list client side). The select
   // policy is open to anon + authenticated, so this works signed out too; the
   // explicit status filter keeps pending/returned drafts out of the public feed.
   useEffect(() => {
@@ -180,7 +202,7 @@ const Home = () => {
       .from("archive_entries")
       .select("*")
       .eq("status", "published")
-      .order("created_at", { ascending: false })
+      .order("created_at", { ascending: true })
       .then(({ data, error }) => {
         if (!mounted) return;
         if (error) {
@@ -197,7 +219,13 @@ const Home = () => {
   }, []);
 
   const q = query.trim().toLowerCase();
-  const results = entries.filter((entry) => {
+  // Sort a copy (state arrays are never mutated) by submitted date, then apply
+  // the search on top so the result list follows the dropdown immediately.
+  const sorted = [...entries].sort((a, b) => {
+    const diff = new Date(a.createdAt) - new Date(b.createdAt);
+    return sortOrder === "oldest" ? diff : -diff;
+  });
+  const results = sorted.filter((entry) => {
     if (!q) return true;
     const haystack = [
       entry.titleKhmer,
@@ -238,11 +266,22 @@ const Home = () => {
           <p style={STYLES.resultCount}>
             {loading ? t.loading : t.count(results.length)}
           </p>
-          {q && (
-            <button style={STYLES.resetInline} onClick={resetSearch}>
-              {t.reset}
-            </button>
-          )}
+          <div style={STYLES.rowRight}>
+            {q && (
+              <button style={STYLES.resetInline} onClick={resetSearch}>
+                {t.reset}
+              </button>
+            )}
+            <select
+              value={sortOrder}
+              onChange={(event) => setSortOrder(event.target.value)}
+              style={STYLES.sort}
+              aria-label={t.sortOldest}
+            >
+              <option value="oldest">{t.sortOldest}</option>
+              <option value="newest">{t.sortNewest}</option>
+            </select>
+          </div>
         </div>
 
         {loading ? (
