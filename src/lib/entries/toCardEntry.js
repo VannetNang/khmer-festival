@@ -13,6 +13,7 @@ export function toCardEntry(row) {
     source: row.source,
     imagePath: row.image_path,
     status: row.status,
+    reviewNote: row.review_note,
     tags: row.tags ?? [],
   };
 }

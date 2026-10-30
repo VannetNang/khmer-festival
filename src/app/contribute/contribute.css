@@ -134,6 +134,28 @@ textarea.c-input {
   border-radius: 10px;
 }
 
+/* Review feedback note shown at the top of the edit form when an entry was
+   returned, so the owner can see what to fix before re-posting. */
+.c-review-note {
+  margin: 0 0 22px;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--danger);
+  background-color: var(--danger-soft);
+  border: 1px solid var(--danger-border);
+  border-radius: 10px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.c-review-note-title {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
 .c-submit {
   display: inline-flex;
   align-items: center;

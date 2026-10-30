@@ -88,7 +88,19 @@ const STYLES = {
     overflowWrap: "anywhere",
     wordBreak: "break-word",
   },
-  actions: { display: "flex", flexWrap: "wrap", gap: 10, marginTop: 18 },
+  actions: { display: "flex", flexWrap: "wrap", gap: 10, marginTop: 10 },
+  explore: {
+    width: "100%",
+    marginTop: 18,
+    padding: "9px 16px",
+    fontSize: 13,
+    fontWeight: 700,
+    color: "var(--accent-text)",
+    backgroundColor: "transparent",
+    border: "1px solid var(--accent-text)",
+    borderRadius: 999,
+    cursor: "pointer",
+  },
   publish: {
     flex: 1,
     minWidth: 150,
@@ -116,7 +128,7 @@ const STYLES = {
   disabled: { opacity: 0.6, cursor: "not-allowed" },
 };
 
-const ReviewEntryCard = ({ entry, busy, onDecide }) => {
+const ReviewEntryCard = ({ entry, busy, onPublish, onReturn, onExplore }) => {
   const { lang } = useLanguage();
   const t = getTranslations(lang).review;
   // Stored image paths can contain spaces; encode them like EntryCard does so
@@ -157,12 +169,21 @@ const ReviewEntryCard = ({ entry, busy, onDecide }) => {
           {t.source} {entry.source}
         </p>
 
+        <button
+          type="button"
+          style={busy ? { ...STYLES.explore, ...STYLES.disabled } : STYLES.explore}
+          disabled={busy}
+          onClick={() => onExplore(entry.id)}
+        >
+          {t.explore}
+        </button>
+
         <div style={STYLES.actions}>
           <button
             type="button"
             style={busy ? { ...STYLES.publish, ...STYLES.disabled } : STYLES.publish}
             disabled={busy}
-            onClick={() => onDecide(entry.id, "published")}
+            onClick={() => onPublish(entry.id)}
           >
             {busy ? "…" : t.publish}
           </button>
@@ -170,7 +191,7 @@ const ReviewEntryCard = ({ entry, busy, onDecide }) => {
             type="button"
             style={busy ? { ...STYLES.return, ...STYLES.disabled } : STYLES.return}
             disabled={busy}
-            onClick={() => onDecide(entry.id, "returned")}
+            onClick={() => onReturn(entry.id)}
           >
             {busy ? "…" : t.return}
           </button>

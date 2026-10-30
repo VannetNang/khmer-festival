@@ -12,6 +12,7 @@ export async function updateArchiveEntry({
   values,
   photo,
   currentImagePath,
+  currentStatus,
 }) {
   let imagePath = currentImagePath;
 
@@ -49,7 +50,15 @@ export async function updateArchiveEntry({
     tags: values.tags.length > 0 ? values.tags : null,
     image_path: imagePath,
   };
-  if (!isReviewer) patch.status = "pending";
+  // A returned entry must always be re-reviewed: editing and re-submitting it
+  // sends it back to 'pending' (the front door to a fresh review cycle) no
+  // matter who performs the edit. Everyone else's edits also drop to 'pending'
+  // unless the editor is a reviewer maintaining a published entry.
+  if (currentStatus === "returned") {
+    patch.status = "pending";
+  } else if (!isReviewer) {
+    patch.status = "pending";
+  }
 
   // .select() makes Supabase return the updated rows so we can confirm a row
   // actually came back and was not silently blocked by Row Level Security.

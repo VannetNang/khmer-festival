@@ -98,10 +98,12 @@ body {
   display: grid;
   /* Fluid columns: place as many cards as fit (each at least ~300px) and let
      them share the row evenly. min(100%, 300px) stops a single track from
-     overflowing a very narrow screen. Because this reads the *content* width
-     it automatically accounts for the fixed sidebar, so iPad/tablet layouts
-     never degrade to squeezed columns. */
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+     overflowing a very narrow screen. auto-fill (not auto-fit) keeps empty
+     tracks, so a lone entry occupies one ~300px track at its normal compact
+     size instead of stretching full-width. Because this reads the *content*
+     width it automatically accounts for the fixed sidebar, so iPad/tablet
+     layouts never degrade to squeezed columns. */
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
   gap: 20px;
   list-style: none;
   padding: 0;

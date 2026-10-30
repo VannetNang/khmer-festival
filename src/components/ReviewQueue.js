@@ -5,7 +5,9 @@ import { createClient } from "../lib/supabase/client.js";
 import { getTranslations } from "../lib/i18n/index.js";
 import { useLanguage } from "../lib/i18n/LanguageProvider.js";
 import { FONT } from "../lib/styles/fonts.js";
+import ReviewDetailDialog from "./ReviewDetailDialog.js";
 import ReviewEntryCard from "./ReviewEntryCard.js";
+import ReviewReturnDialog from "./ReviewReturnDialog.js";
 
 // The interactive half of /review. The server page already proved this visitor
 // is a reviewer and handed over the pending rows; this component turns the
@@ -68,13 +70,26 @@ const STYLES = {
     padding: "12px 16px",
     margin: "0 0 20px",
   },
+  count: {
+    fontFamily: FONT,
+    fontSize: 14,
+    fontWeight: 600,
+    color: "var(--text-muted)",
+    margin: "0 0 16px",
+  },
   list: {
     listStyle: "none",
     padding: 0,
     margin: 0,
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    // A true responsive grid (like the archive's card grid): a lone pending
+    // entry occupies ONE ~320px track at the same compact size it would have
+    // next to other cards, instead of stretching full-width.
+    gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 320px), 1fr))",
     gap: 20,
+    width: "100%",
+    boxSizing: "border-box",
+    alignItems: "stretch",
   },
 };
 
@@ -84,6 +99,10 @@ const ReviewQueue = ({ initialEntries }) => {
   const [entries, setEntries] = useState(initialEntries);
   const [busyId, setBusyId] = useState(null);
   const [message, setMessage] = useState(null);
+  const [noteForId, setNoteForId] = useState(null);
+  const [noteText, setNoteText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [detailId, setDetailId] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [query, setQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("oldest");
@@ -106,17 +125,19 @@ const ReviewQueue = ({ initialEntries }) => {
     setQuery(event.target.value);
   };
 
-  // One handler drives both buttons. The result is checked strictly: only a
-  // literal data === true removes the entry from the queue; anything else —
-  // a false result, an RPC error, or a thrown network error — leaves the entry
-  // in place and surfaces the shared failure message.
-  const decide = async (entryId, decision) => {
+  // The result is checked strictly: only a literal data === true removes the
+  // entry from the queue; anything else — a false result, an RPC error, or a
+  // thrown network error — leaves the entry in place and surfaces the shared
+  // failure message. Publish passes note: null; Return passes the reviewer's
+  // typed note so the contributor knows what to fix.
+  const applyDecision = async (entryId, decision, note) => {
     setBusyId(entryId);
     setMessage(null);
     try {
       const { data, error } = await createClient().rpc("review_entry", {
         entry_id: entryId,
         decision,
+        note,
       });
       if (!error && data === true) {
         setEntries((prev) => prev.filter((entry) => entry.id !== entryId));
@@ -130,6 +151,30 @@ const ReviewQueue = ({ initialEntries }) => {
     } finally {
       setBusyId(null);
     }
+  };
+
+  const publishEntry = (entryId) => applyDecision(entryId, "published", null);
+
+  // "Explore More" opens the full detail modal for an entry.
+  const openDetail = (entryId) => setDetailId(entryId);
+
+  // Return never fires straight away: the reviewer first writes the reason.
+  const openReturnNote = (entryId) => {
+    setNoteForId(entryId);
+    setNoteText("");
+  };
+
+  const cancelReturnNote = () => {
+    setNoteForId(null);
+    setNoteText("");
+  };
+
+  const confirmReturn = async () => {
+    if (noteForId == null) return;
+    setSubmitting(true);
+    await applyDecision(noteForId, "returned", noteText.trim() || null);
+    setSubmitting(false);
+    cancelReturnNote();
   };
 
   // Filter the queue by title/description, then order it by submitted date.
@@ -151,8 +196,14 @@ const ReviewQueue = ({ initialEntries }) => {
       return sortOrder === "oldest" ? diff : -diff;
     });
 
+  // The entry shown in the "Explore More" modal; resolving it from the current
+  // list means the modal closes itself as soon as the entry is decided.
+  const detailEntry = entries.find((entry) => entry.id === detailId) ?? null;
+
   return (
     <>
+      <p style={STYLES.count}>{t.pendingCount(entries.length)}</p>
+
       <div style={STYLES.controls}>
         <input
           type="search"
@@ -186,16 +237,45 @@ const ReviewQueue = ({ initialEntries }) => {
       ) : (
         <ul style={STYLES.list}>
           {visible.map((entry) => (
-            <li key={entry.id} style={{ margin: 0, width: "100%" }}>
+            <li key={entry.id} style={{ margin: 0, width: "100%", minWidth: 0 }}>
               <ReviewEntryCard
                 entry={entry}
                 busy={busyId === entry.id}
-                onDecide={decide}
+                onPublish={publishEntry}
+                onReturn={openReturnNote}
+                onExplore={openDetail}
               />
             </li>
           ))}
         </ul>
       )}
+
+      {detailEntry ? (
+        <ReviewDetailDialog
+          entry={detailEntry}
+          busy={busyId === detailEntry.id}
+          t={t}
+          onPublish={publishEntry}
+          onReturn={openReturnNote}
+          onClose={() => setDetailId(null)}
+        />
+      ) : null}
+
+      {noteForId ? (
+        <ReviewReturnDialog
+          title={t.returnNoteTitle}
+          label={t.returnNoteLabel}
+          placeholder={t.returnNotePlaceholder}
+          value={noteText}
+          onChange={setNoteText}
+          confirmLabel={t.confirmReturn}
+          busyLabel={t.returning}
+          cancelLabel={t.cancel}
+          busy={submitting}
+          onConfirm={confirmReturn}
+          onCancel={cancelReturnNote}
+        />
+      ) : null}
     </>
   );
 };

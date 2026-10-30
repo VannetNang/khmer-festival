@@ -53,6 +53,32 @@ const STYLES = {
     fontSize: 14,
     textDecoration: "none",
   },
+  tabs: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8,
+    margin: "0 0 24px",
+  },
+  tab: {
+    fontFamily: FONT,
+    fontSize: 13,
+    fontWeight: 600,
+    color: "var(--text-muted)",
+    backgroundColor: "var(--surface)",
+    // No border shorthand: the active tab toggles only borderColor, so these
+    // must be separate longhands or React would warn about the mixed diff.
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "var(--border-strong)",
+    borderRadius: 999,
+    padding: "8px 14px",
+    cursor: "pointer",
+  },
+  tabActive: {
+    color: "var(--accent-contrast)",
+    backgroundColor: "var(--accent)",
+    borderColor: "var(--accent-text)",
+  },
 };
 
 // My Entries: the signed-in user's own entries with their review status shown
@@ -61,6 +87,8 @@ export default function MyEntriesPage() {
   const { lang } = useLanguage();
   const [status, setStatus] = useState("checking");
   const [entries, setEntries] = useState([]);
+  // Status filter tabs: "all" shows everything; otherwise only that status.
+  const [filter, setFilter] = useState("all");
   const t = getTranslations(lang).myEntries;
 
   useEffect(() => {
@@ -100,11 +128,35 @@ export default function MyEntriesPage() {
   const removeEntry = (entryId) =>
     setEntries((prev) => prev.filter((entry) => entry.id !== entryId));
 
+  // "all" tab shows every entry; the other tabs show only that status.
+  const visibleEntries =
+    filter === "all" ? entries : entries.filter((entry) => entry.status === filter);
+
   return (
     <main style={STYLES.main} lang={lang}>
       <div style={STYLES.content}>
         <h1 style={STYLES.heading}>{t.title}</h1>
         <p style={STYLES.subtitle}>{t.subtitle}</p>
+
+        {status === "ready" ? (
+          <div style={STYLES.tabs} role="group" aria-label={t.filters.all}>
+            {["all", "pending", "published", "returned"].map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setFilter(key)}
+                style={
+                  filter === key
+                    ? { ...STYLES.tab, ...STYLES.tabActive }
+                    : STYLES.tab
+                }
+                aria-pressed={filter === key}
+              >
+                {t.filters[key]}
+              </button>
+            ))}
+          </div>
+        ) : null}
 
         {status === "checking" ? (
           <p style={STYLES.status}>{t.loading}</p>
@@ -117,7 +169,7 @@ export default function MyEntriesPage() {
           </p>
         ) : status === "failed" ? (
           <p style={STYLES.status}>{t.loadFailed}</p>
-        ) : entries.length === 0 ? (
+        ) : visibleEntries.length === 0 ? (
           <div style={STYLES.empty}>
             <p style={STYLES.emptyTitle}>{t.emptyTitle}</p>
             <p style={STYLES.emptyText}>{t.emptyText}</p>
@@ -127,7 +179,7 @@ export default function MyEntriesPage() {
           </div>
         ) : (
           <ul className="card-grid">
-            {entries.map((entry) => (
+            {visibleEntries.map((entry) => (
               <li key={entry.id} className="card-cell">
                 <MyEntryCard entry={entry} lang={lang} onDeleted={removeEntry} />
               </li>

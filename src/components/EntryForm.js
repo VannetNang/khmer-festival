@@ -37,6 +37,7 @@ const EntryForm = ({
   existingPhotoUrl = null,
   redirectTo = "/profile",
   successMessage = null,
+  notice = null,
   onSave,
 }) => {
   const router = useRouter();
@@ -112,6 +113,7 @@ const EntryForm = ({
 
   return (
     <form className="contribute-form" onSubmit={handleSubmit} noValidate>
+      {notice ? <div className="c-review-note">{notice}</div> : null}
       <EntryContentFields
         values={values}
         errors={errors}

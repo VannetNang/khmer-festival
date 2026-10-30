@@ -112,6 +112,21 @@ const styles = {
     fontWeight: 700,
     color: "var(--text-muted)",
   },
+  // Banner shown under the photo for an entry the reviewer returned with
+  // feedback, so the owner can see at a glance why it came back.
+  note: {
+    fontSize: 13,
+    lineHeight: 1.6,
+    color: "var(--danger)",
+    backgroundColor: "var(--danger-soft)",
+    borderBottom: "1px solid var(--danger-border)",
+    padding: "12px 22px",
+    margin: 0,
+    // Long unspaced text must wrap inside the banner.
+    overflowWrap: "anywhere",
+    wordBreak: "break-word",
+    whiteSpace: "pre-line",
+  },
   actions: {
     marginTop: 14,
   },
@@ -126,7 +141,7 @@ const COPY = {
   },
 };
 
-const EntryCard = ({ entry, lang, from = "home", actions, topRight }) => {
+const EntryCard = ({ entry, lang, from = "home", actions, topRight, note }) => {
   const router = useRouter();
   const title = lang === "km" ? entry.titleKhmer : entry.titleEnglish;
   const description =
@@ -161,6 +176,7 @@ const EntryCard = ({ entry, lang, from = "home", actions, topRight }) => {
         <img src={src} alt={title} style={styles.image} loading="lazy" />
         {topRight ? <div style={styles.topRight}>{topRight}</div> : null}
       </div>
+      {note ? <p style={styles.note}>{note}</p> : null}
       <div style={styles.body}>
         <p style={styles.category}>{entry.category}</p>
         <h3 style={styles.title}>{title}</h3>
