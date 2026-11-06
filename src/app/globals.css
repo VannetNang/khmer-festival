@@ -1,0 +1,97 @@
+/* ============================================================
+   Global font definitions + base reset.
+
+   Loaded ONCE from the root layout so the Inter / Kantumruy Pro
+   @font-face rules and the body font stay available on every
+   route — including after client-side navigation between pages.
+   Keeping this in home.css (a page-scoped stylesheet) made the
+   fonts disappear whenever a route that did not import it loaded.
+   ============================================================ */
+
+/* Inter (Latin script) */
+@font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("../../public/fonts/Inter-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Kantumruy Pro (Khmer script) */
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("../../public/fonts/KantumruyPro-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("../../public/fonts/KantumruyPro-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("../../public/fonts/KantumruyPro-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kantumruy Pro";
+  src: url("../../public/fonts/KantumruyPro-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Global & Layout Resets
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: none;
+  scrollbar-gutter: stable;
+  font-family: "Inter", "Kantumruy Pro", sans-serif;
+}

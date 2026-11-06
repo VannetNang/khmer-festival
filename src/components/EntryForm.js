@@ -35,7 +35,7 @@ const EntryForm = ({
   submittingLabel,
   photoHint,
   existingPhotoUrl = null,
-  redirectTo = "/profile",
+  redirectTo = "/my-entries",
   successMessage = null,
   notice = null,
   onSave,

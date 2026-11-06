@@ -52,6 +52,8 @@ const EditEntryForm = ({ lang, entry }) => {
     return { id: result.id };
   };
 
+  // /profile is disabled (dashboard is disabled; /my-entries covers it), so
+  // every edit — re-posted or not — lands back on the contributor's list.
   return (
     <EntryForm
       lang={lang}
@@ -61,7 +63,7 @@ const EditEntryForm = ({ lang, entry }) => {
       submitLabel={isReturned ? te.repost : te.save}
       submittingLabel={isReturned ? te.reposting : te.saving}
       photoHint={te.photoOptionalHint}
-      redirectTo={isReturned ? "/my-entries" : "/profile"}
+      redirectTo="/my-entries"
       notice={
         isReturned && entry.review_note ? (
           <>

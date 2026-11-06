@@ -129,12 +129,12 @@ export default function EntryPage() {
   // Entries).
   useEffect(() => {
     const from = new URLSearchParams(window.location.search).get("from");
+    // /profile is disabled (dashboard is gone; /my-entries covers it), so a
+    // "profile"-sourced visit goes back to /my-entries too.
     setBackHref(
-      from === "profile"
-        ? "/profile"
-        : from === "my-entries"
-          ? "/my-entries"
-          : "/",
+      from === "my-entries" || from === "profile"
+        ? "/my-entries"
+        : "/",
     );
   }, []);
 

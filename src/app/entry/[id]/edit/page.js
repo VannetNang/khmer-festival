@@ -61,7 +61,8 @@ export default function EditEntryPage() {
     <main className="contribute-page" lang={lang}>
       <div className="contribute-card">
         <div className="contribute-top">
-          <BackLink href="/profile" />
+          {/* /profile is disabled; the owner's list is /my-entries. */}
+          <BackLink href="/my-entries" />
         </div>
 
         <h1 className="c-title">{te.editTitle}</h1>
