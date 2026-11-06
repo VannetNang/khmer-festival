@@ -9,6 +9,10 @@ create table if not exists archive_entries (
   -- baseline columns every entry gets
   id uuid primary key default gen_random_uuid(),
   created_at timestamptz not null default now(),
+  -- set to now() on every edit/resubmission (see updateArchiveEntry.js) so a
+  -- returned-and-reposted entry can tell its resubmission date apart from the
+  -- original submission date
+  updated_at timestamptz not null default now(),
   owner uuid not null references auth.users (id),
 
   -- archive content (Khmer text is first-class content, never stripped or "fixed")

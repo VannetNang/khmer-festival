@@ -176,6 +176,7 @@ const en = {
     close: "Close",
     source: "Source:",
     submitted: "Submitted:",
+    resubmitted: "Resubmitted:",
     khmer: "Khmer",
     english: "English",
   },

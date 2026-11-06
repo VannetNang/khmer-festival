@@ -40,6 +40,10 @@ export async function updateArchiveEntry({
   }
 
   const patch = {
+    // Stamp the moment of this edit/resubmission so the review queue can show
+    // both the original submission date (created_at) and when it was last
+    // re-posted. updated_at only differs from created_at after an update.
+    updated_at: new Date().toISOString(),
     title_khmer: values.titleKhmer.trim(),
     title_english: values.titleEnglish.trim(),
     category: values.category,

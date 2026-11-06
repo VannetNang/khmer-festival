@@ -147,11 +147,23 @@ const ReviewDetailDialog = ({ entry, busy, t, onPublish, onReturn, onClose }) =>
   }, [busy, onClose]);
 
   const src = entry.image_path.replace(/ /g, "%20");
+  // Same submission/resubmission pair shown on the review card, repeated here
+  // in the detail modal. Original submission date is always present; the
+  // resubmission date only differs when a returned entry was re-posted.
   const submitted = new Date(entry.created_at).toLocaleDateString("en-GB", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+  const resubmitted =
+    entry.updated_at &&
+    new Date(entry.updated_at).getTime() !== new Date(entry.created_at).getTime()
+      ? new Date(entry.updated_at).toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : null;
 
   return (
     <div
@@ -172,6 +184,11 @@ const ReviewDetailDialog = ({ entry, busy, t, onPublish, onReturn, onClose }) =>
           <p style={STYLES.meta}>
             {t.submitted} {submitted}
           </p>
+          {resubmitted && (
+            <p style={STYLES.meta}>
+              {t.resubmitted} {resubmitted}
+            </p>
+          )}
 
           <div style={STYLES.section}>
             <p style={STYLES.sectionLabel}>{t.khmer}</p>

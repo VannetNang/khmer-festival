@@ -134,11 +134,23 @@ const ReviewEntryCard = ({ entry, busy, onPublish, onReturn, onExplore }) => {
   // Stored image paths can contain spaces; encode them like EntryCard does so
   // the browser can resolve the URL.
   const src = entry.image_path.replace(/ /g, "%20");
+  // Original submission date always shown.
   const submitted = new Date(entry.created_at).toLocaleDateString("en-GB", {
     year: "numeric",
     month: "short",
     day: "numeric",
   });
+  // A returned entry that was re-posted carries a different updated_at stamp.
+  // Only show the resubmission line when the two timestamps actually differ.
+  const resubmitted =
+    entry.updated_at &&
+    new Date(entry.updated_at).getTime() !== new Date(entry.created_at).getTime()
+      ? new Date(entry.updated_at).toLocaleDateString("en-GB", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })
+      : null;
 
   return (
     <article style={STYLES.card}>
@@ -152,6 +164,11 @@ const ReviewEntryCard = ({ entry, busy, onPublish, onReturn, onExplore }) => {
         <p style={STYLES.meta}>
           {t.submitted} {submitted}
         </p>
+        {resubmitted && (
+          <p style={STYLES.meta}>
+            {t.resubmitted} {resubmitted}
+          </p>
+        )}
 
         <div style={STYLES.section}>
           <p style={STYLES.sectionLabel}>{t.khmer}</p>
