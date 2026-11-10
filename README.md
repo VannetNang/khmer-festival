@@ -84,8 +84,8 @@ _Note on Photography:_ Featured visual imagery is generated via **Google Stitch 
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/YOUR-USERNAME/YOUR-REPO-NAME.git
-   cd YOUR-REPO-NAME
+   git clone https://github.com/VannetNang/khmer-festival.git
+   cd khmer-festival
    ```
 
 2. **Install dependencies** (only `next`, `react`, `react-dom`, `@supabase/supabase-js`, `@supabase/ssr`)
