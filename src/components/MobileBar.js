@@ -61,20 +61,40 @@ const MobileBar = () => {
   return (
     <>
       <header className="mobile-topbar">
-        <Link href="/" className="mobile-title">
-          <span className="brand-icon">
-            <SparklesIcon size={18} />
-          </span>
-          <span className="mobile-title-text">{t.appTitle}</span>
-        </Link>
+        {/* Line 1: brand + language toggle. The title gets flex:1 so it always
+            has room and is never cut off on narrow screens. */}
+        <div className="mobile-topbar-row">
+          <Link href="/" className="mobile-title">
+            <span className="brand-icon">
+              <SparklesIcon size={18} />
+            </span>
+            <span className="mobile-title-text">{t.appTitle}</span>
+          </Link>
 
-        <div className="mobile-topbar-right">
+          <button
+            type="button"
+            className="mobile-lang"
+            onClick={() => setLang(lang === "km" ? "en" : "km")}
+            aria-label={t.language}
+          >
+            <GlobeIcon size={16} />
+            {/* The toggle names the language it switches TO, in that
+                language's own script. */}
+            {lang === "km" ? "English" : "ខ្មែរ"}
+          </button>
+        </div>
+
+        {/* Line 2: auth actions. Shown only on mobile — the desktop sidebar
+            takes over at 768px, where this row collapses away. */}
+        <div className="mobile-topbar-row mobile-topbar-subrow">
           {user ? (
-            <div className="mobile-user">
-              <span className="mobile-avatar">
-                {displayName(user).charAt(0).toUpperCase()}
-              </span>
-              <span className="mobile-user-name">{displayName(user)}</span>
+            <>
+              <div className="mobile-user">
+                <span className="mobile-avatar">
+                  {displayName(user).charAt(0).toUpperCase()}
+                </span>
+                <span className="mobile-user-name">{displayName(user)}</span>
+              </div>
               <button
                 type="button"
                 className="mobile-logout"
@@ -84,26 +104,17 @@ const MobileBar = () => {
                 {loggingOut ? <Spinner /> : null}
                 {loggingOut ? t.loggingOut : t.logout}
               </button>
-            </div>
+            </>
           ) : (
-            <>
+            <div className="mobile-auth-row">
               <Link href="/login" className="mobile-auth">
                 {t.logIn}
               </Link>
               <Link href="/signup" className="mobile-auth">
                 {t.register}
               </Link>
-            </>
+            </div>
           )}
-          <button
-            type="button"
-            className="mobile-lang"
-            onClick={() => setLang(lang === "km" ? "en" : "km")}
-            aria-label={t.language}
-          >
-            <GlobeIcon size={16} />
-            {lang === "km" ? "KH" : "EN"}
-          </button>
         </div>
       </header>
 

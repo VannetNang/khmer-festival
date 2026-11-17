@@ -258,19 +258,36 @@ select {
   right: 0;
   z-index: 50;
   display: none;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 56px;
+  padding: 8px 14px;
+  background-color: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Each line of the two-row mobile header. */
+.mobile-topbar-row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  height: 56px;
-  padding: 0 14px;
-  background-color: var(--surface-2);
-  border-bottom: 1px solid var(--border);
+  min-width: 0;
+}
+
+/* The sub-row (auth actions) only exists on mobile, where the topbar is
+   visible; on desktop/tablet the sidebar takes over and it never renders. */
+.mobile-topbar-subrow {
+  padding-top: 0;
 }
 
 .mobile-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* flex:1 + min-width:0 lets the full Khmer title keep its space and never
+     get truncated by the language button on narrow screens. */
+  flex: 1;
   min-width: 0;
   font-size: 15px;
   font-weight: 700;
@@ -284,11 +301,14 @@ select {
   white-space: nowrap;
 }
 
-.mobile-topbar-right {
+/* Login / Register pair in the sub-row, spread apart for touch targets. */
+.mobile-auth-row {
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
+  justify-content: right;
+  gap: 12px;
+  width: 100%;
 }
 
 .mobile-auth {
@@ -403,7 +423,9 @@ select {
   }
 
   .app-content {
-    padding-top: 56px;
+    /* The two-row mobile topbar is taller than the old single 56px bar, so
+       the content needs extra clearance to stay below it. */
+    padding-top: 100px;
     padding-bottom: 60px;
   }
 }

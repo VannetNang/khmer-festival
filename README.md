@@ -14,7 +14,7 @@ Visitors can freely browse published entries, search records, sign up as contrib
 
 This app is built specifically for people in Cambodia:
 
-- **Khmer-First UI:** Native rendering using the **Kantomruy Pro** font alongside English support.
+- **Khmer-First UI:** Native rendering using the self-hosted **Kantumruy Pro** font alongside **Inter** for English support.
 - **Mobile-First Design:** Optimized and tested on everyday smartphones (like the **Tecno Pova 7**) featuring a responsive bottom navigation bar on mobile and a sidebar on desktop.
 - **Slow-Connection Tolerant:** Self-hosted fonts, lightweight assets, progressive loading states, and zero heavy trackers.
 - **Rigorous Source Attribution:** Every entry enforces a validated `source` field so that knowledge is always correctly credited.
@@ -29,20 +29,20 @@ This app is built specifically for people in Cambodia:
 
 | Table Name | Key Columns | Purpose |
 | :--- | :--- | :--- |
-| **`archive_entries`** | `id`, `owner`, `title_khmer`, `title_english`, `category`, `description_khmer`, `description_english`, `season_or_month`, `source`, `image_path`, `status`, `review_note`, `created_at`, `updated_at` | Stores all community-submitted and seed cultural festival entries. |
+| **`archive_entries`** | `id`, `owner`, `title_khmer`, `title_english`, `category`, `description_khmer`, `description_english`, `season_or_month`, `source`, `image_path`, `tags`, `status`, `review_note`, `created_at`, `updated_at` | Stores all community-submitted and seed cultural festival entries. |
 | **`reviewers`** | `user_id` | Maps authenticated user IDs to reviewer roles. The single source of truth for moderation access. |
 
 ### Entry Lifecycle Statuses
 
 - **`pending`** — Newly submitted items waiting for moderator approval.
-- **`published`** — Approved items visible on the public home page feed.
-- **`returned`** — Items sent back with a reviewer feedback note (`review_note`). Resubmitting automatically re-queues them as `pending`.
+- **`published`** — Approved items visible on the public home page feed. Any edit by a regular contributor resets the entry back to `pending` for re-moderation (only reviewers can edit a published entry while keeping it `published`).
+- **`returned`** — Items sent back with a reviewer feedback note (`review_note`). Editing and resubmitting automatically re-queues them as `pending`.
 
 ### Row Level Security (RLS) Policies
 
-- **`select`:** Publicly viewable for published feeds (`using (true)` in DB; filtered by app queries).
+- **`select`:** Restricted by database RLS so logged-out (`anon`) visitors can only read `status = 'published'` rows, while owners can read their own entries (`owner = auth.uid()`) and reviewers (`is_reviewer()`) can read pending entries in the moderation queue.
 - **`insert`:** Authenticated contributors can insert rows where `owner = auth.uid()`.
-- **`update` / `delete`:** Owners can only modify or remove their own records.
+- **`update` / `delete`:** Owners can only modify or remove their own records (`owner = auth.uid()`).
 
 ---
 
@@ -71,9 +71,10 @@ Seed entries in `src/data/entries.js` are credited to official Cambodian institu
 - **Pchum Ben:** Ministry of Culture and Fine Arts & Ministry of Cults and Religion
 - **Water Festival:** Ministry of Tourism of Cambodia
 - **Meak Bochea:** Ministry of Cults and Religion
-- **Royal Plowing Ceremony & King's Birthday:** Ministry of the Royal Palace
-- **National Independence Day:** Ministry of Information
-- **Visak Bochea:** Buddhist Institute of Cambodia
+- **Royal Plowing Ceremony:** Ministry of the Royal Palace
+- **King Norodom Sihamoni's Birthday:** Ministry of the Royal Palace & National Committee for Organizing National and International Festivals
+- **National Independence Day:** Ministry of Information & National Committee for Organizing National and International Festivals
+- **Visak Bochea:** Buddhist Institute of Cambodia & Ministry of Cults and Religion
 
 _Note on Photography:_ Featured visual imagery is generated via **Google Stitch AI** under verified project permissions.
 
@@ -119,7 +120,7 @@ _Note on Photography:_ Featured visual imagery is generated via **Google Stitch 
 - A stranger cannot publish their own entry through the page or the console: yes, tested (November 6, 2026)
 - Logged out, the API returns nothing pending or returned: yes, tested (November 6, 2026)
 - Contributors can edit and delete only their own entries: yes
-- No secrets anywhere in the repo history: yes, checked with (how)
+- No secrets anywhere in the repo history: yes, checked with `git log --all --full-history -- ".env*"` and `git log --all -p -S "service_role"` (and `.env*` ignored in `.gitignore`)
 - At least eight real entries, each with a credited source: yes, (8 entries + community contributions)
 - Khmer renders on every screen a user meets, including the queue: yes
 - Works at phone width: yes, Tecno Pova 7 and mobile viewports (375px–430px)

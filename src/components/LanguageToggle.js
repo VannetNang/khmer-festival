@@ -39,8 +39,11 @@ const LanguageToggle = () => {
 
   return (
     <div className="lang-toggle" role="group" aria-label={t.language}>
-      {renderOption("en", t.english)}
-      {renderOption("km", t.khmer)}
+      {/* Labels are fixed, not translated: the English option always reads
+          "English" and the Khmer option always shows Khmer script, so each
+          button names its own language. */}
+      {renderOption("en", "English")}
+      {renderOption("km", "ខ្មែរ")}
     </div>
   );
 };

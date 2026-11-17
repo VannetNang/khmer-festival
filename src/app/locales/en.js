@@ -5,7 +5,7 @@ const en = {
   home: {
     heroTitle: "Cambodia's Living Festivals",
     heroSubtitle:
-      "Browse and search the Khmer festivals preserved in this living archive.",
+      "Browse and search Khmer festivals preserved in this archive.",
     searchPlaceholder: "Search festivals, categories, or tags…",
     count: (n) => `${n} festival${n === 1 ? "" : "s"} shown`,
     emptyTitle: "No festivals found",
